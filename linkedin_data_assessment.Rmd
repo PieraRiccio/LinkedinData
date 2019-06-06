@@ -1,0 +1,275 @@
+---
+title: "Linkedin data assessment"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+plot(cars)
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+Librerie
+
+```{r}
+
+library(dplyr)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+```
+
+### Descrizione del dataset
+
+```{r}
+raw_data <- read.csv(file = "linkedin_data.csv")
+raw_data
+```
+
+Al fine di sviluppare un'analisi sui data relativi alle assunzioni mediante l'uso dei profili Linkedin, si selezionano i campi di interesse: età, sesso, numero di followers, etnia, bellezza, nazionalità, durata media degli incarichi precedenti, nome della compagnia, numero di incarichi precedenti, numero di posizioni ottenute all'interno della stessa azienda, durata dell'incarico attuale, durata media per posizione ottenuta attualmente nell'azienda.
+
+_hé la maggior parte delle persone presenti nel dataset sono bianchi, per poter trarre delle statistiche significative, si è deciso di accomunare in un'unica categoria (Other) le persone asiatiche e di pelle nera. ??????_
+
+_Vedere se riusciamo ad eliminare qualche riga seguendo qualche parametro particolare per cui pensiamo che alcune persone non debbano essere prese in considerazione nell'analisi._
+n_pos indica il numero di posizioni che la persona ha occupato all'interno dell'azienda. tenure_len:durata totale di tutti i suoi incarichi all'interno dell'azienda. Avg_pos_len indica la durata media associata ad ogni posizione. Quindi se la persona ha assunto n posizioni diverse, allora avg_pos_len = tenute_len / n.
+
+
+```{r}
+df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty,
+                   ethnicity, gender, nationality, n_followers) %>%
+        filter(tenure_len > 0)
+nrow(df)
+```
+
+Guardiamo la ripartizione demografica della popolazione nel nostro dataset.
+
+```{r}
+summary(df$ethnicity)
+```
+```{r}
+summary(df$gender)
+```
+
+```{r}
+summary(df$nationality)
+```
+
+```{r}
+round( summary(df$nationality) / nrow(df) * 100, 2)
+```
+
+```{r}
+xtabs(~ gender + ethnicity, data=df)
+```
+```{r}
+xtabs(~ nationality + ethnicity, data=df)
+```
+```{r}
+p_male <- ggplot(data=filter(df, gender =="Male"), aes(ordered(tenure_len))) + 
+          geom_bar() + xlab("Durata dell'incarico ottenuto") +
+          ylim(0, 1300) + ggtitle("Assunti uomini")
+p_female <- ggplot(data=filter(df, gender =="Female"), aes(ordered(tenure_len))) + 
+          geom_bar() + xlab("Durata dell'incarico ottenuto") +
+          ylim(0, 500) + ggtitle("Assunte donne")
+grid.arrange(p_male, p_female,  ncol = 2)
+```
+```{r}
+h_male_high <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(10000, 22000, by=1000), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,10))
+h_female_high <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(10000, 22000, by=1000), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+        ylim(c(0,10))
+grid.arrange(h_male_high, h_female_high,  ncol = 2)
+
+```
+```{r}
+h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 2000, by=100), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,10000))
+h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 2000, by=100), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+        ylim(c(0,10000))
+grid.arrange(h_male_low, h_female_low,  ncol = 2)
+```
+```{r}
+h_male_total <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 22000, by=2000), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,50000))
+h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 22000, by=2000), 
+                 col="red", 
+                 fill="green", 
+                 alpha = .2) + 
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+        ylim(c(0,50000))
+grid.arrange(h_male_total, h_female_total,  ncol = 2)
+```
+
+```{r}
+# Calcoliamo le percentuali di donne che e uomini che lavorano nelle seguenti fasce:
+# - low: che va da 0 ore a 5000
+# - medium: che va da 5000 a 15000
+# - high: che va da 15000 a 22000
+
+low_female <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Female") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_female)
+low_female_perc <- nrow(low_female) * 100 / 14773
+low_female_perc
+
+medium_female <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Female") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_female)
+medium_female_perc <- nrow(medium_female) * 100 / 14773
+medium_female_perc
+
+high_female <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Female") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_female)
+high_female_perc <- nrow(high_female) * 100 / 14773
+high_female_perc
+
+
+
+
+low_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_male)
+low_male_perc <- nrow(low_male) * 100 / 47425
+low_male_perc
+
+medium_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_male)
+medium_male_perc <- nrow(medium_male) * 100 / 47425
+medium_male_perc
+
+high_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_male)
+high_male_perc <- nrow(high_male) * 100 / 47425
+high_male_perc
+```
+```{r}
+
+low_black <- dplyr::select(df, ethnicity, tenure_len) %>%
+        filter(ethnicity == "Black") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_black)
+low_black_perc <- nrow(low_black) * 100 / 4858
+low_black_perc
+
+medium_black <- dplyr::select(df, ethnicity, tenure_len) %>%
+        filter(ethnicity == "Black") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_black)
+medium_black_perc <- nrow(medium_black) * 100 / 4858
+medium_black_perc
+
+high_black <- dplyr::select(df, ethnicity, tenure_len) %>%
+        filter(ethnicity == "Black") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_black)
+high_black_perc <- nrow(high_black) * 100 / 4858
+high_black_perc
+
+
+
+
+
+low_white <- dplyr::select(df, ethnicity, tenure_len) %>%
+        filter(ethnicity == "White") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_white)
+low_white_perc <- nrow(low_white) * 100 / 47546
+low_white_perc
+
+medium_white <- dplyr::select(df, ethnicity, tenure_len) %>%
+        filter(ethnicity == "White") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_white)
+medium_white_perc <- nrow(medium_white) * 100 / 47546
+medium_white_perc
+
+high_white <- dplyr::select(df, ethnicity, tenure_len) %>%
+        filter(ethnicity == "White") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_white)
+high_white_perc <- nrow(high_white) * 100 / 47546
+high_white_perc
+
+
+
+
+low_m <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_male)
+low_male_perc <- nrow(low_male) * 100 / 47425
+low_male_perc
+
+medium_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_male)
+medium_male_perc <- nrow(medium_male) * 100 / 47425
+medium_male_perc
+
+high_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_male)
+high_male_perc <- nrow(high_male) * 100 / 47425
+high_male_perc
+```
+
