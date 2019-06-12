@@ -200,16 +200,13 @@ n_pos indica il numero di posizioni che la persona ha occupato all'interno dell'
 
 ```{r}
 df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
-                   ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+                   ethnicity, gender, nationality, n_followers, m_urn, smile)%>%
         filter(tenure_len > 0) %>%
         group_by(m_urn) %>%
         arrange(desc(n_prev_tenures)) %>%
         slice(1)
 nrow(df)
 df
-```
-```{r}
-plot(df$tenure_len, df$smile, type = "h", main = "lala", col = "Red")
 ```
 
 Guardiamo la ripartizione demografica della popolazione nel nostro dataset.
@@ -235,129 +232,66 @@ xtabs(~ gender + ethnicity, data=df)
 ```{r}
 xtabs(~ nationality + ethnicity, data=df)
 ```
-```{r}
-p_male <- ggplot(data=filter(df, gender =="Male"), aes(ordered(tenure_len))) + 
-          geom_bar() + xlab("Durata dell'incarico ottenuto") +
-          ylim(0, 1300) + ggtitle("Assunti uomini")
-p_female <- ggplot(data=filter(df, gender =="Female"), aes(ordered(tenure_len))) + 
-          geom_bar() + xlab("Durata dell'incarico ottenuto") +
-          ylim(0, 500) + ggtitle("Assunte donne")
-grid.arrange(p_male, p_female,  ncol = 2)
-```
-```{r}
-h_male_high <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(10000, 22000, by=1000), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
-        ylim(c(0,10))
-h_female_high <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(10000, 22000, by=1000), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
-        ylim(c(0,10))
-grid.arrange(h_male_high, h_female_high,  ncol = 2)
 
-```
-```{r}
-h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 2000, by=100), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
-        ylim(c(0,1200))
-h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 2000, by=100), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
-        ylim(c(0, 1200))
-grid.arrange(h_male_low, h_female_low,  ncol = 2)
-```
 ```{r}
 h_male_total <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
         geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
+                 col="violet", 
+                 fill="pink", 
+                 alpha = .9) + 
         labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
-        ylim(c(0,50000))
+        ylim(c(0,10250))
 h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
         geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
+                 col="blue", 
+                 fill="lightblue", 
+                 alpha = .9) + 
         labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
-        ylim(c(0,50000))
-grid.arrange(h_male_total, h_female_total,  ncol = 2)
+        ylim(c(0,10250))
+title <- textGrob("Distribuzione totale di lavoratori e lavoratrici", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)
+```
+```{r}
+h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 3000, by=100), 
+                 col="violet", 
+                 fill="pink", 
+                 alpha = .9) + 
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,1200))
+h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 3000, by=100), 
+                 col="blue", 
+                 fill="lightblue", 
+                 alpha = .9) + 
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+        ylim(c(0, 1200))
+title <- textGrob("Distribuzione di lavoratori e lavoratrici per breve periodo\n(fino a poco più di un anno)", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)
 ```
 
 ```{r}
-# Calcoliamo le percentuali di donne che e uomini che lavorano nelle seguenti fasce:
-# - low: che va da 0 ore a 5000
-# - medium: che va da 5000 a 15000
-# - high: che va da 15000 a 22000
+h_male_high <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(3000, 22000, by=1000), 
+                 col="violet", 
+                 fill="pink", 
+                 alpha = .9) + 
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,400))
+h_female_high <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(3000, 22000, by=1000), 
+                 col="blue", 
+                 fill="lightblue", 
+                 alpha = .9) + 
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+        ylim(c(0,400))
+title <- textGrob("Distribuzione di lavoratori e lavoratrici per lungo periodo\n(più di un anno)", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_high, h_female_high,  ncol = 2, top=title)
 
-low_female <- dplyr::select(df, gender, tenure_len) %>%
-        filter(gender == "Female") %>%
-        filter(tenure_len<5000) %>%
-        filter (tenure_len>0)
-nrow(low_female)
-low_female_perc <- nrow(low_female) * 100 / 14773
-low_female_perc
-
-medium_female <- dplyr::select(df, gender, tenure_len) %>%
-        filter(gender == "Female") %>%
-        filter(tenure_len<15000) %>%
-        filter (tenure_len>=5000)
-nrow(medium_female)
-medium_female_perc <- nrow(medium_female) * 100 / 14773
-medium_female_perc
-
-high_female <- dplyr::select(df, gender, tenure_len) %>%
-        filter(gender == "Female") %>%
-        filter(tenure_len<22000) %>%
-        filter (tenure_len>=15000)
-nrow(high_female)
-high_female_perc <- nrow(high_female) * 100 / 14773
-high_female_perc
-
-
-
-
-low_male <- dplyr::select(df, gender, tenure_len) %>%
-        filter(gender == "Male") %>%
-        filter(tenure_len<5000) %>%
-        filter (tenure_len>0)
-nrow(low_male)
-low_male_perc <- nrow(low_male) * 100 / 47425
-low_male_perc
-
-medium_male <- dplyr::select(df, gender, tenure_len) %>%
-        filter(gender == "Male") %>%
-        filter(tenure_len<15000) %>%
-        filter (tenure_len>=5000)
-nrow(medium_male)
-medium_male_perc <- nrow(medium_male) * 100 / 47425
-medium_male_perc
-
-high_male <- dplyr::select(df, gender, tenure_len) %>%
-        filter(gender == "Male") %>%
-        filter(tenure_len<22000) %>%
-        filter (tenure_len>=15000)
-nrow(high_male)
-high_male_perc <- nrow(high_male) * 100 / 47425
 ```
+
 Non sembra ci siano particolari discriminazioni nelle distribuzioni della durata dell'incarico per genere, tuttavia va tenuto in conto il fatto che le aziende analizzate siano tutte aziende informatiche e probabilmente non è un caso che le donne presenti nel dataset siano di numero molto inferiore agli uomini.
 
-```{r}
-high_male_perc
-```
 ```{r}
 
 low_black <- dplyr::select(df, ethnicity, tenure_len) %>%
@@ -539,5 +473,11 @@ grid.arrange(male_prev_pos, female_prev_pos,  ncol = 2)
 ```{r}
 matrix_beauty_prev <- dplyr::select(females_working, beauty, n_prev_tenures) 
 plot(matrix_beauty_prev)
+```
+```{r}
+```{r}
+plot(df$smile, df$tenure_len, main = "Correlazione tra il sorriso mostrato in foto e la lunghezza dell'incarico ottenuto", col = "Red")
+```
+Si può evincere che non c'è correlazione tra la lunghezza dell'incarico e il sorriso
 ```
 
