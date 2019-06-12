@@ -240,16 +240,16 @@ h_male_total <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) +
                  fill="pink", 
                  alpha = .9) + 
         labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
-        ylim(c(0,10250))
+        ylim(c(0,11602))
 h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
         geom_histogram(breaks=seq(0, 22000, by=2000), 
                  col="blue", 
                  fill="lightblue", 
                  alpha = .9) + 
         labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
-        ylim(c(0,10250))
+        ylim(c(0,3650))
 title <- textGrob("Distribuzione totale di lavoratori e lavoratrici", gp=gpar(fontsize=15, font=1))
-grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)
+grid.arrange(h_male_total, h_female_total,  ncol = 2, top=title)
 ```
 ```{r}
 h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
@@ -258,14 +258,14 @@ h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) +
                  fill="pink", 
                  alpha = .9) + 
         labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
-        ylim(c(0,1200))
+        ylim(c(0,1450))
 h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
         geom_histogram(breaks=seq(0, 3000, by=100), 
                  col="blue", 
                  fill="lightblue", 
                  alpha = .9) + 
         labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
-        ylim(c(0, 1200))
+        ylim(c(0, 456))
 title <- textGrob("Distribuzione di lavoratori e lavoratrici per breve periodo\n(fino a poco più di un anno)", gp=gpar(fontsize=15, font=1))
 grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)
 ```
@@ -292,8 +292,38 @@ grid.arrange(h_male_high, h_female_high,  ncol = 2, top=title)
 
 Non sembra ci siano particolari discriminazioni nelle distribuzioni della durata dell'incarico per genere, tuttavia va tenuto in conto il fatto che le aziende analizzate siano tutte aziende informatiche e probabilmente non è un caso che le donne presenti nel dataset siano di numero molto inferiore agli uomini.
 
-```{r}
+Ripetiamo la stessa analisi condotta sui generi anche sulle diverse etnie.
 
+```{r}
+h_black_total <- ggplot(data=filter(df, ethnicity=="Black"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 22000, by=2000), 
+                 col="white", 
+                 fill="yellow", 
+                 alpha = .9) + 
+        labs(title="Persone assunte di etnia nera", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,1225))
+h_asian_total <- ggplot(data=filter(df, ethnicity=="Asian"), aes(tenure_len)) + 
+        geom_histogram(breaks=seq(0, 22000, by=2000), 
+                 col="black", 
+                 fill="white", 
+                 alpha = .9) + 
+        labs(title="Persone assunte di etnia asiatica", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,2593))
+h_white_total <- ggplot(data=filter(df, ethnicity =="White"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000), 
+                 col="yellow", 
+                 fill="black", 
+                 alpha = .9) + 
+        labs(title="Persone assunte di etnia bianca", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        ylim(c(0,11434))
+title <- textGrob("Distribuzione totale di lavoratori per etnia", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_black_total, h_asian_total, h_white_total,  ncol = 2, top=title)
+```
+```
+
+
+
+```{r}
 low_black <- dplyr::select(df, ethnicity, tenure_len) %>%
         filter(ethnicity == "Black") %>%
         filter(tenure_len<5000) %>%
