@@ -1897,7 +1897,7 @@ nrow(df)</code></pre>
 <pre class="r"><code>summary(df$ethnicity)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiQXNpYW4gQmxhY2sgV2hpdGUgXG4gMjU5MyAgMTIyNSAxMTQzNCBcbiJ9 -->
-<pre><code>Asian Black White 
+<pre><code>Asian Black White
  2593  1225 11434 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -1906,7 +1906,7 @@ nrow(df)</code></pre>
 <pre class="r"><code>summary(df$gender)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiRmVtYWxlICAgTWFsZSBcbiAgMzY1MCAgMTE2MDIgXG4ifQ== -->
-<pre><code>Female   Male 
+<pre><code>Female   Male
   3650  11602 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -1917,9 +1917,9 @@ nrow(df)</code></pre>
 <pre class="r"><code>summary(df$nationality)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIGFmcmljYW4gY2VsdGljX2VuZ2xpc2ggICAgIGVhc3RfYXNpYW4gICAgICAgZXVyb3BlYW4gICAgICAgICAgZ3JlZWsgXG4gICAgICAgICAgIDEyMCAgICAgICAgICAgNTc1NyAgICAgICAgICAgMTU0OSAgICAgICAgICAgMjQzMiAgICAgICAgICAgICA3NCBcbiAgICAgIGhpc3BhbmljICAgICAgICAgamV3aXNoICAgICAgICAgbXVzbGltICAgICAgICAgbm9yZGljICAgIHNvdXRoX2FzaWFuIFxuICAgICAgICAgIDE0NzQgICAgICAgICAgICAgNTEgICAgICAgICAgICA4ODggICAgICAgICAgICAzMzAgICAgICAgICAgIDI1NzcgXG4ifQ== -->
-<pre><code>       african celtic_english     east_asian       european          greek 
-           120           5757           1549           2432             74 
-      hispanic         jewish         muslim         nordic    south_asian 
+<pre><code>       african celtic_english     east_asian       european          greek
+           120           5757           1549           2432             74
+      hispanic         jewish         muslim         nordic    south_asian
           1474             51            888            330           2577 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -1930,9 +1930,9 @@ nrow(df)</code></pre>
 <pre class="r"><code>round( summary(df$nationality) / nrow(df) * 100, 2)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIGFmcmljYW4gY2VsdGljX2VuZ2xpc2ggICAgIGVhc3RfYXNpYW4gICAgICAgZXVyb3BlYW4gICAgICAgICAgZ3JlZWsgXG4gICAgICAgICAgMC43OSAgICAgICAgICAzNy43NSAgICAgICAgICAxMC4xNiAgICAgICAgICAxNS45NSAgICAgICAgICAgMC40OSBcbiAgICAgIGhpc3BhbmljICAgICAgICAgamV3aXNoICAgICAgICAgbXVzbGltICAgICAgICAgbm9yZGljICAgIHNvdXRoX2FzaWFuIFxuICAgICAgICAgIDkuNjYgICAgICAgICAgIDAuMzMgICAgICAgICAgIDUuODIgICAgICAgICAgIDIuMTYgICAgICAgICAgMTYuOTAgXG4ifQ== -->
-<pre><code>       african celtic_english     east_asian       european          greek 
-          0.79          37.75          10.16          15.95           0.49 
-      hispanic         jewish         muslim         nordic    south_asian 
+<pre><code>       african celtic_english     east_asian       european          greek
+          0.79          37.75          10.16          15.95           0.49
+      hispanic         jewish         muslim         nordic    south_asian
           9.66           0.33           5.82           2.16          16.90 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
@@ -1972,19 +1972,19 @@ nationality      Asian Black White
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaF9tYWxlX3RvdGFsIDwtIGdncGxvdChkYXRhPWZpbHRlcihkZiwgZ2VuZGVyID09XCJNYWxlXCIpLCBhZXModGVudXJlX2xlbikpICsgXG4gICAgICAgIGdlb21faGlzdG9ncmFtKGJyZWFrcz1zZXEoMCwgMjIwMDAsIGJ5PTIwMDApLCBcbiAgICAgICAgICAgICAgICAgY29sPVwidmlvbGV0XCIsIFxuICAgICAgICAgICAgICAgICBmaWxsPVwicGlua1wiLCBcbiAgICAgICAgICAgICAgICAgYWxwaGEgPSAuOSkgKyBcbiAgICAgICAgbGFicyh0aXRsZT1cIlVvbWluaSBhc3N1bnRpXCIsIHg9XCJEdXJhdGEgZGVsbCdpbmNhcmljbyAob3JlKVwiLCB5PVwiTnVtZXJvIGFzc3VudGlcIikgKyBcbiAgICAgICAgeWxpbShjKDAsMTE2MDIpKVxuaF9mZW1hbGVfdG90YWwgPC0gZ2dwbG90KGRhdGE9ZmlsdGVyKGRmLCBnZW5kZXIgPT1cIkZlbWFsZVwiKSwgYWVzKHRlbnVyZV9sZW4pKSArIFxuICAgICAgICBnZW9tX2hpc3RvZ3JhbShicmVha3M9c2VxKDAsIDIyMDAwLCBieT0yMDAwKSwgXG4gICAgICAgICAgICAgICAgIGNvbD1cImJsdWVcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJsaWdodGJsdWVcIiwgXG4gICAgICAgICAgICAgICAgIGFscGhhID0gLjkpICsgXG4gICAgICAgIGxhYnModGl0bGU9XCJEb25uZSBhc3N1bnRlXCIsIHg9XCJEdXJhdGEgZGVsbCdpbmNhcmljbyAob3JlKVwiLCB5PVwiTnVtZXJvIGFzc3VudGVcIikgKyBcbiAgICAgICAgeWxpbShjKDAsMzY1MCkpXG50aXRsZSA8LSB0ZXh0R3JvYihcIkRpc3RyaWJ1emlvbmUgdG90YWxlIGRpIGxhdm9yYXRvcmkgZSBsYXZvcmF0cmljaVwiLCBncD1ncGFyKGZvbnRzaXplPTE1LCBmb250PTEpKVxuZ3JpZC5hcnJhbmdlKGhfbWFsZV90b3RhbCwgaF9mZW1hbGVfdG90YWwsICBuY29sID0gMiwgdG9wPXRpdGxlKVxuYGBgIn0= -->
-<pre class="r"><code>h_male_total &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col=&quot;violet&quot;, 
-                 fill=&quot;pink&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Uomini assunti&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) + 
+<pre class="r"><code>h_male_total &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col=&quot;violet&quot;,
+                 fill=&quot;pink&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Uomini assunti&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,11602))
-h_female_total &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col=&quot;blue&quot;, 
-                 fill=&quot;lightblue&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Donne assunte&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunte&quot;) + 
+h_female_total &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col=&quot;blue&quot;,
+                 fill=&quot;lightblue&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Donne assunte&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunte&quot;) +
         ylim(c(0,3650))
 title &lt;- textGrob(&quot;Distribuzione totale di lavoratori e lavoratrici&quot;, gp=gpar(fontsize=15, font=1))
 grid.arrange(h_male_total, h_female_total,  ncol = 2, top=title)</code></pre>
@@ -1995,19 +1995,19 @@ grid.arrange(h_male_total, h_female_total,  ncol = 2, top=title)</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaF9tYWxlX2xvdyA8LSBnZ3Bsb3QoZGF0YT1maWx0ZXIoZGYsIGdlbmRlciA9PVwiTWFsZVwiKSwgYWVzKHRlbnVyZV9sZW4pKSArIFxuICAgICAgICBnZW9tX2hpc3RvZ3JhbShicmVha3M9c2VxKDAsIDMwMDAsIGJ5PTEwMCksIFxuICAgICAgICAgICAgICAgICBjb2w9XCJ2aW9sZXRcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJwaW5rXCIsIFxuICAgICAgICAgICAgICAgICBhbHBoYSA9IC45KSArIFxuICAgICAgICBsYWJzKHRpdGxlPVwiVW9taW5pIGFzc3VudGlcIiwgeD1cIkR1cmF0YSBkZWxsJ2luY2FyaWNvIChvcmUpXCIsIHk9XCJOdW1lcm8gYXNzdW50aVwiKSArIFxuICAgICAgICB5bGltKGMoMCwxNDUwKSlcbmhfZmVtYWxlX2xvdyA8LSBnZ3Bsb3QoZGF0YT1maWx0ZXIoZGYsIGdlbmRlciA9PVwiRmVtYWxlXCIpLCBhZXModGVudXJlX2xlbikpICsgXG4gICAgICAgIGdlb21faGlzdG9ncmFtKGJyZWFrcz1zZXEoMCwgMzAwMCwgYnk9MTAwKSwgXG4gICAgICAgICAgICAgICAgIGNvbD1cImJsdWVcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJsaWdodGJsdWVcIiwgXG4gICAgICAgICAgICAgICAgIGFscGhhID0gLjkpICsgXG4gICAgICAgIGxhYnModGl0bGU9XCJEb25uZSBhc3N1bnRlXCIsIHg9XCJEdXJhdGEgZGVsbCdpbmNhcmljbyAob3JlKVwiLCB5PVwiTnVtZXJvIGFzc3VudGVcIikgKyBcbiAgICAgICAgeWxpbShjKDAsIDQ1NikpXG50aXRsZSA8LSB0ZXh0R3JvYihcIkRpc3RyaWJ1emlvbmUgZGkgbGF2b3JhdG9yaSBlIGxhdm9yYXRyaWNpIHBlciBicmV2ZSBwZXJpb2RvXFxuKGZpbm8gYSBwb2NvIHBpw7kgZGkgdW4gYW5ubylcIiwgZ3A9Z3Bhcihmb250c2l6ZT0xNSwgZm9udD0xKSlcbmdyaWQuYXJyYW5nZShoX21hbGVfbG93LCBoX2ZlbWFsZV9sb3csICBuY29sID0gMiwgdG9wPXRpdGxlKVxuYGBgIn0= -->
-<pre class="r"><code>h_male_low &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 3000, by=100), 
-                 col=&quot;violet&quot;, 
-                 fill=&quot;pink&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Uomini assunti&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) + 
+<pre class="r"><code>h_male_low &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 3000, by=100),
+                 col=&quot;violet&quot;,
+                 fill=&quot;pink&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Uomini assunti&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,1450))
-h_female_low &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 3000, by=100), 
-                 col=&quot;blue&quot;, 
-                 fill=&quot;lightblue&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Donne assunte&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunte&quot;) + 
+h_female_low &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 3000, by=100),
+                 col=&quot;blue&quot;,
+                 fill=&quot;lightblue&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Donne assunte&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunte&quot;) +
         ylim(c(0, 456))
 title &lt;- textGrob(&quot;Distribuzione di lavoratori e lavoratrici per breve periodo\n(fino a poco più di un anno)&quot;, gp=gpar(fontsize=15, font=1))
 grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)</code></pre>
@@ -2020,19 +2020,19 @@ grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)</code></pre>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaF9tYWxlX2hpZ2ggPC0gZ2dwbG90KGRhdGE9ZmlsdGVyKGRmLCBnZW5kZXIgPT1cIk1hbGVcIiksIGFlcyh0ZW51cmVfbGVuKSkgKyBcbiAgICAgICAgZ2VvbV9oaXN0b2dyYW0oYnJlYWtzPXNlcSgzMDAwLCAyMjAwMCwgYnk9MTAwMCksIFxuICAgICAgICAgICAgICAgICBjb2w9XCJ2aW9sZXRcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJwaW5rXCIsIFxuICAgICAgICAgICAgICAgICBhbHBoYSA9IC45KSArIFxuICAgICAgICBsYWJzKHRpdGxlPVwiVW9taW5pIGFzc3VudGlcIiwgeD1cIkR1cmF0YSBkZWxsJ2luY2FyaWNvIChvcmUpXCIsIHk9XCJOdW1lcm8gYXNzdW50aVwiKSArIFxuICAgICAgICB5bGltKGMoMCw0MDApKVxuaF9mZW1hbGVfaGlnaCA8LSBnZ3Bsb3QoZGF0YT1maWx0ZXIoZGYsIGdlbmRlciA9PVwiRmVtYWxlXCIpLCBhZXModGVudXJlX2xlbikpICsgXG4gICAgICAgIGdlb21faGlzdG9ncmFtKGJyZWFrcz1zZXEoMzAwMCwgMjIwMDAsIGJ5PTEwMDApLCBcbiAgICAgICAgICAgICAgICAgY29sPVwiYmx1ZVwiLCBcbiAgICAgICAgICAgICAgICAgZmlsbD1cImxpZ2h0Ymx1ZVwiLCBcbiAgICAgICAgICAgICAgICAgYWxwaGEgPSAuOSkgKyBcbiAgICAgICAgbGFicyh0aXRsZT1cIkRvbm5lIGFzc3VudGVcIiwgeD1cIkR1cmF0YSBkZWxsJ2luY2FyaWNvIChvcmUpXCIsIHk9XCJOdW1lcm8gYXNzdW50ZVwiKSArIFxuICAgICAgICB5bGltKGMoMCw0MDApKVxudGl0bGUgPC0gdGV4dEdyb2IoXCJEaXN0cmlidXppb25lIGRpIGxhdm9yYXRvcmkgZSBsYXZvcmF0cmljaSBwZXIgbHVuZ28gcGVyaW9kb1xcbihwacO5IGRpIHVuIGFubm8pXCIsIGdwPWdwYXIoZm9udHNpemU9MTUsIGZvbnQ9MSkpXG5ncmlkLmFycmFuZ2UoaF9tYWxlX2hpZ2gsIGhfZmVtYWxlX2hpZ2gsICBuY29sID0gMiwgdG9wPXRpdGxlKVxuXG5gYGAifQ== -->
-<pre class="r"><code>h_male_high &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(3000, 22000, by=1000), 
-                 col=&quot;violet&quot;, 
-                 fill=&quot;pink&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Uomini assunti&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) + 
+<pre class="r"><code>h_male_high &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(3000, 22000, by=1000),
+                 col=&quot;violet&quot;,
+                 fill=&quot;pink&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Uomini assunti&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,400))
-h_female_high &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(3000, 22000, by=1000), 
-                 col=&quot;blue&quot;, 
-                 fill=&quot;lightblue&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Donne assunte&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunte&quot;) + 
+h_female_high &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(3000, 22000, by=1000),
+                 col=&quot;blue&quot;,
+                 fill=&quot;lightblue&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Donne assunte&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunte&quot;) +
         ylim(c(0,400))
 title &lt;- textGrob(&quot;Distribuzione di lavoratori e lavoratrici per lungo periodo\n(più di un anno)&quot;, gp=gpar(fontsize=15, font=1))
 grid.arrange(h_male_high, h_female_high,  ncol = 2, top=title)
@@ -2048,26 +2048,26 @@ grid.arrange(h_male_high, h_female_high,  ncol = 2, top=title)
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaF9ibGFja190b3RhbCA8LSBnZ3Bsb3QoZGF0YT1maWx0ZXIoZGYsIGV0aG5pY2l0eT09XCJCbGFja1wiKSwgYWVzKHRlbnVyZV9sZW4pKSArIFxuICAgICAgICBnZW9tX2hpc3RvZ3JhbShicmVha3M9c2VxKDAsIDIyMDAwLCBieT0yMDAwKSwgXG4gICAgICAgICAgICAgICAgIGNvbD1cIndoaXRlXCIsIFxuICAgICAgICAgICAgICAgICBmaWxsPVwieWVsbG93XCIsIFxuICAgICAgICAgICAgICAgICBhbHBoYSA9IC45KSArIFxuICAgICAgICBsYWJzKHRpdGxlPVwiUGVyc29uZSBhc3N1bnRlIGRpIGV0bmlhIG5lcmFcIiwgeD1cIkR1cmF0YSBkZWxsJ2luY2FyaWNvIChvcmUpXCIsIHk9XCJOdW1lcm8gYXNzdW50aVwiKSArIFxuICAgICAgICB5bGltKGMoMCwxMjI1KSlcbmhfYXNpYW5fdG90YWwgPC0gZ2dwbG90KGRhdGE9ZmlsdGVyKGRmLCBldGhuaWNpdHk9PVwiQXNpYW5cIiksIGFlcyh0ZW51cmVfbGVuKSkgKyBcbiAgICAgICAgZ2VvbV9oaXN0b2dyYW0oYnJlYWtzPXNlcSgwLCAyMjAwMCwgYnk9MjAwMCksIFxuICAgICAgICAgICAgICAgICBjb2w9XCJibGFja1wiLCBcbiAgICAgICAgICAgICAgICAgZmlsbD1cIndoaXRlXCIsIFxuICAgICAgICAgICAgICAgICBhbHBoYSA9IC45KSArIFxuICAgICAgICBsYWJzKHRpdGxlPVwiUGVyc29uZSBhc3N1bnRlIGRpIGV0bmlhIGFzaWF0aWNhXCIsIHg9XCJEdXJhdGEgZGVsbCdpbmNhcmljbyAob3JlKVwiLCB5PVwiTnVtZXJvIGFzc3VudGlcIikgKyBcbiAgICAgICAgeWxpbShjKDAsMjU5MykpXG5oX3doaXRlX3RvdGFsIDwtIGdncGxvdChkYXRhPWZpbHRlcihkZiwgZXRobmljaXR5ID09XCJXaGl0ZVwiKSwgYWVzKHRlbnVyZV9sZW4pKSArXG4gICAgICAgIGdlb21faGlzdG9ncmFtKGJyZWFrcz1zZXEoMCwgMjIwMDAsIGJ5PTIwMDApLCBcbiAgICAgICAgICAgICAgICAgY29sPVwieWVsbG93XCIsIFxuICAgICAgICAgICAgICAgICBmaWxsPVwiYmxhY2tcIiwgXG4gICAgICAgICAgICAgICAgIGFscGhhID0gLjkpICsgXG4gICAgICAgIGxhYnModGl0bGU9XCJQZXJzb25lIGFzc3VudGUgZGkgZXRuaWEgYmlhbmNhXCIsIHg9XCJEdXJhdGEgZGVsbCdpbmNhcmljbyAob3JlKVwiLCB5PVwiTnVtZXJvIGFzc3VudGlcIikgKyBcbiAgICAgICAgeWxpbShjKDAsMTE0MzQpKVxudGl0bGUgPC0gdGV4dEdyb2IoXCJEaXN0cmlidXppb25lIHRvdGFsZSBkaSBsYXZvcmF0b3JpIHBlciBldG5pYVwiLCBncD1ncGFyKGZvbnRzaXplPTE1LCBmb250PTEpKVxuZ3JpZC5hcnJhbmdlKGhfYmxhY2tfdG90YWwsIGhfYXNpYW5fdG90YWwsIGhfd2hpdGVfdG90YWwsICBuY29sID0gMiwgdG9wPXRpdGxlKVxuYGBgIn0= -->
-<pre class="r"><code>h_black_total &lt;- ggplot(data=filter(df, ethnicity==&quot;Black&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col=&quot;white&quot;, 
-                 fill=&quot;yellow&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Persone assunte di etnia nera&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) + 
+<pre class="r"><code>h_black_total &lt;- ggplot(data=filter(df, ethnicity==&quot;Black&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col=&quot;white&quot;,
+                 fill=&quot;yellow&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Persone assunte di etnia nera&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,1225))
-h_asian_total &lt;- ggplot(data=filter(df, ethnicity==&quot;Asian&quot;), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col=&quot;black&quot;, 
-                 fill=&quot;white&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Persone assunte di etnia asiatica&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) + 
+h_asian_total &lt;- ggplot(data=filter(df, ethnicity==&quot;Asian&quot;), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col=&quot;black&quot;,
+                 fill=&quot;white&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Persone assunte di etnia asiatica&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,2593))
 h_white_total &lt;- ggplot(data=filter(df, ethnicity ==&quot;White&quot;), aes(tenure_len)) +
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col=&quot;yellow&quot;, 
-                 fill=&quot;black&quot;, 
-                 alpha = .9) + 
-        labs(title=&quot;Persone assunte di etnia bianca&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) + 
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col=&quot;yellow&quot;,
+                 fill=&quot;black&quot;,
+                 alpha = .9) +
+        labs(title=&quot;Persone assunte di etnia bianca&quot;, x=&quot;Durata dell&#39;incarico (ore)&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,11434))
 title &lt;- textGrob(&quot;Distribuzione totale di lavoratori per etnia&quot;, gp=gpar(fontsize=15, font=1))
 grid.arrange(h_black_total, h_asian_total, h_white_total,  ncol = 2, top=title)</code></pre>
@@ -2187,19 +2187,19 @@ nrow(not_working)</code></pre>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmVhdXR5X21hbGUgPC0gZ2dwbG90KGRhdGE9ZmlsdGVyKGRmLCBnZW5kZXIgPT1cIk1hbGVcIiksIGFlcyhiZWF1dHlfbWFsZSkpICsgXG4gICAgICAgIGdlb21faGlzdG9ncmFtKGJyZWFrcz1zZXEoMCwgMTAwLCBieT01KSwgXG4gICAgICAgICAgICAgICAgIGNvbD1cInJlZFwiLCBcbiAgICAgICAgICAgICAgICAgZmlsbD1cImdyZWVuXCIsIFxuICAgICAgICAgICAgICAgICBhbHBoYSA9IC4yKSArIFxuICAgICAgICBsYWJzKHRpdGxlPVwiVW9taW5pIGFzc3VudGlcIiwgeD1cIlZhbHV0YXppb25lIGRlbGxhIGJlbGxlenphXCIsIHk9XCJOdW1lcm8gYXNzdW50aVwiKSArIFxuICAgICAgICB5bGltKGMoMCwxMDAwMCkpXG5iZWF1dHlfZmVtYWxlIDwtIGdncGxvdChkYXRhPWZpbHRlcihkZiwgZ2VuZGVyID09XCJGZW1hbGVcIiksIGFlcyhiZWF1dHlfZmVtYWxlKSkgKyBcbiAgICAgICAgZ2VvbV9oaXN0b2dyYW0oYnJlYWtzPXNlcSgwLCAxMDAsIGJ5PTUpLCBcbiAgICAgICAgICAgICAgICAgY29sPVwicmVkXCIsIFxuICAgICAgICAgICAgICAgICBmaWxsPVwiZ3JlZW5cIiwgXG4gICAgICAgICAgICAgICAgIGFscGhhID0gLjIpICsgXG4gICAgICAgIGxhYnModGl0bGU9XCJEb25uZSBhc3N1bnRlXCIsIHg9XCJWYWx1dGF6aW9uZSBkZWxsYSBiZWxsZXp6YVwiLCB5PVwiTnVtZXJvIGFzc3VudGVcIikgKyBcbiAgICAgICAgeWxpbShjKDAsMTAwMDApKVxuZ3JpZC5hcnJhbmdlKGJlYXV0eV9tYWxlLCBiZWF1dHlfZmVtYWxlLCAgbmNvbCA9IDIpXG5gYGAifQ== -->
-<pre class="r"><code>beauty_male &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(beauty_male)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col=&quot;red&quot;, 
-                 fill=&quot;green&quot;, 
-                 alpha = .2) + 
-        labs(title=&quot;Uomini assunti&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero assunti&quot;) + 
+<pre class="r"><code>beauty_male &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(beauty_male)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col=&quot;red&quot;,
+                 fill=&quot;green&quot;,
+                 alpha = .2) +
+        labs(title=&quot;Uomini assunti&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero assunti&quot;) +
         ylim(c(0,10000))
-beauty_female &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(beauty_female)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col=&quot;red&quot;, 
-                 fill=&quot;green&quot;, 
-                 alpha = .2) + 
-        labs(title=&quot;Donne assunte&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero assunte&quot;) + 
+beauty_female &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(beauty_female)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col=&quot;red&quot;,
+                 fill=&quot;green&quot;,
+                 alpha = .2) +
+        labs(title=&quot;Donne assunte&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero assunte&quot;) +
         ylim(c(0,10000))
 grid.arrange(beauty_male, beauty_female,  ncol = 2)</code></pre>
 <!-- rnb-source-end -->
@@ -2210,19 +2210,19 @@ grid.arrange(beauty_male, beauty_female,  ncol = 2)</code></pre>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmVhdXR5X21hbGVfbm90X3cgPC0gZ2dwbG90KGRhdGE9ZmlsdGVyKG5vdF93b3JraW5nLCBnZW5kZXIgPT1cIk1hbGVcIiksIGFlcyhiZWF1dHkpKSArIFxuICAgICAgICBnZW9tX2hpc3RvZ3JhbShicmVha3M9c2VxKDAsIDEwMCwgYnk9NSksIFxuICAgICAgICAgICAgICAgICBjb2w9XCJyZWRcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJncmVlblwiLCBcbiAgICAgICAgICAgICAgICAgYWxwaGEgPSAuMikgKyBcbiAgICAgICAgbGFicyh0aXRsZT1cIlVvbWluaSBub24gYXNzdW50aVwiLCB4PVwiVmFsdXRhemlvbmUgZGVsbGEgYmVsbGV6emFcIiwgeT1cIk51bWVybyBub24gYXNzdW50aVwiKSArIFxuICAgICAgICB5bGltKGMoMCwxMDApKVxuYmVhdXR5X2ZlbWFsZV9ub3RfdyA8LSBnZ3Bsb3QoZGF0YT1maWx0ZXIobm90X3dvcmtpbmcsIGdlbmRlciA9PVwiRmVtYWxlXCIpLCBhZXMoYmVhdXR5KSkgKyBcbiAgICAgICAgZ2VvbV9oaXN0b2dyYW0oYnJlYWtzPXNlcSgwLCAxMDAsIGJ5PTUpLCBcbiAgICAgICAgICAgICAgICAgY29sPVwicmVkXCIsIFxuICAgICAgICAgICAgICAgICBmaWxsPVwiZ3JlZW5cIiwgXG4gICAgICAgICAgICAgICAgIGFscGhhID0gLjIpICsgXG4gICAgICAgIGxhYnModGl0bGU9XCJEb25uZSBub24gYXNzdW50ZVwiLCB4PVwiVmFsdXRhemlvbmUgZGVsbGEgYmVsbGV6emFcIiwgeT1cIk51bWVybyBub24gYXNzdW50ZVwiKSArIFxuICAgICAgICB5bGltKGMoMCwxMDApKVxuZ3JpZC5hcnJhbmdlKGJlYXV0eV9tYWxlX25vdF93LCBiZWF1dHlfZmVtYWxlX25vdF93LCAgbmNvbCA9IDIpXG5gYGAifQ== -->
-<pre class="r"><code>beauty_male_not_w &lt;- ggplot(data=filter(not_working, gender ==&quot;Male&quot;), aes(beauty)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col=&quot;red&quot;, 
-                 fill=&quot;green&quot;, 
-                 alpha = .2) + 
-        labs(title=&quot;Uomini non assunti&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero non assunti&quot;) + 
+<pre class="r"><code>beauty_male_not_w &lt;- ggplot(data=filter(not_working, gender ==&quot;Male&quot;), aes(beauty)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col=&quot;red&quot;,
+                 fill=&quot;green&quot;,
+                 alpha = .2) +
+        labs(title=&quot;Uomini non assunti&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero non assunti&quot;) +
         ylim(c(0,100))
-beauty_female_not_w &lt;- ggplot(data=filter(not_working, gender ==&quot;Female&quot;), aes(beauty)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col=&quot;red&quot;, 
-                 fill=&quot;green&quot;, 
-                 alpha = .2) + 
-        labs(title=&quot;Donne non assunte&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero non assunte&quot;) + 
+beauty_female_not_w &lt;- ggplot(data=filter(not_working, gender ==&quot;Female&quot;), aes(beauty)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col=&quot;red&quot;,
+                 fill=&quot;green&quot;,
+                 alpha = .2) +
+        labs(title=&quot;Donne non assunte&quot;, x=&quot;Valutazione della bellezza&quot;, y=&quot;Numero non assunte&quot;) +
         ylim(c(0,100))
 grid.arrange(beauty_male_not_w, beauty_female_not_w,  ncol = 2)</code></pre>
 <!-- rnb-source-end -->
@@ -2238,7 +2238,7 @@ plot(matrix_beauty_len)</code></pre>
 <pre class="r"><code>females_working &lt;- dplyr::select(df, beauty, tenure_len, gender, n_prev_tenures) %&gt;%
         filter (gender == &quot;Female&quot;)
 nrow(females_working)
-matrix_beauty_len_female &lt;- dplyr::select(females_working, beauty, tenure_len) 
+matrix_beauty_len_female &lt;- dplyr::select(females_working, beauty, tenure_len)
 plot(matrix_beauty_len_female)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2246,7 +2246,7 @@ plot(matrix_beauty_len_female)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFsZXNfd29ya2luZyA8LSBkcGx5cjo6c2VsZWN0KGRmLCBiZWF1dHksIHRlbnVyZV9sZW4sIGdlbmRlcikgJT4lXG4gICAgICAgIGZpbHRlciAoZ2VuZGVyID09IFwiTWFsZVwiKVxubWF0cml4X2JlYXV0eV9sZW5fbWFsZSA8LSBkcGx5cjo6c2VsZWN0KG1hbGVzX3dvcmtpbmcsIGJlYXV0eSwgdGVudXJlX2xlbikgXG5wbG90KG1hdHJpeF9iZWF1dHlfbGVuX21hbGUpXG5gYGAifQ== -->
 <pre class="r"><code>males_working &lt;- dplyr::select(df, beauty, tenure_len, gender) %&gt;%
         filter (gender == &quot;Male&quot;)
-matrix_beauty_len_male &lt;- dplyr::select(males_working, beauty, tenure_len) 
+matrix_beauty_len_male &lt;- dplyr::select(males_working, beauty, tenure_len)
 plot(matrix_beauty_len_male)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
@@ -2268,19 +2268,19 @@ plot(matrix_followers_len)</code></pre>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFsZV9wcmV2X3BvcyA8LSBnZ3Bsb3QoZGF0YT1maWx0ZXIoZGYsIGdlbmRlciA9PVwiTWFsZVwiKSwgYWVzKG5fcHJldl90ZW51cmVzKSkgKyBcbiAgICAgICAgZ2VvbV9oaXN0b2dyYW0oYnJlYWtzPXNlcSgxLCAxMCwgYnk9MSksIFxuICAgICAgICAgICAgICAgICBjb2w9XCJyZWRcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJncmVlblwiLCBcbiAgICAgICAgICAgICAgICAgYWxwaGEgPSAuMikgKyBcbiAgICAgICAgbGFicyh0aXRsZT1cIlVvbWluaSBhc3N1bnRpXCIsIHg9XCJOdW1lcm8gZGkgaW5jYXJpY2hpIHByZWNlZGVudGlcIiwgeT1cIlVvbWluaVwiKSArIFxuICAgICAgICB5bGltKGMoMCwxMDAwMCkpXG5mZW1hbGVfcHJldl9wb3MgPC0gZ2dwbG90KGRhdGE9ZmlsdGVyKGRmLCBnZW5kZXIgPT1cIkZlbWFsZVwiKSwgYWVzKG5fcHJldl90ZW51cmVzKSkgKyBcbiAgICAgICAgZ2VvbV9oaXN0b2dyYW0oYnJlYWtzPXNlcSgxLCAxMCwgYnk9MSksIFxuICAgICAgICAgICAgICAgICBjb2w9XCJyZWRcIiwgXG4gICAgICAgICAgICAgICAgIGZpbGw9XCJncmVlblwiLCBcbiAgICAgICAgICAgICAgICAgYWxwaGEgPSAuMikgKyBcbiAgICAgICAgbGFicyh0aXRsZT1cIkRvbm5lIGFzc3VudGVcIiwgeD1cIk51bWVybyBkaSBpbmNhcmljaGkgcHJlY2VkZW50aVwiLCB5PVwiRG9ubmVcIikgKyBcbiAgICAgICAgeWxpbShjKDAsMTAwMDApKVxuZ3JpZC5hcnJhbmdlKG1hbGVfcHJldl9wb3MsIGZlbWFsZV9wcmV2X3BvcywgIG5jb2wgPSAyKVxuXG5gYGAifQ== -->
-<pre class="r"><code>male_prev_pos &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(n_prev_tenures)) + 
-        geom_histogram(breaks=seq(1, 10, by=1), 
-                 col=&quot;red&quot;, 
-                 fill=&quot;green&quot;, 
-                 alpha = .2) + 
-        labs(title=&quot;Uomini assunti&quot;, x=&quot;Numero di incarichi precedenti&quot;, y=&quot;Uomini&quot;) + 
+<pre class="r"><code>male_prev_pos &lt;- ggplot(data=filter(df, gender ==&quot;Male&quot;), aes(n_prev_tenures)) +
+        geom_histogram(breaks=seq(1, 10, by=1),
+                 col=&quot;red&quot;,
+                 fill=&quot;green&quot;,
+                 alpha = .2) +
+        labs(title=&quot;Uomini assunti&quot;, x=&quot;Numero di incarichi precedenti&quot;, y=&quot;Uomini&quot;) +
         ylim(c(0,10000))
-female_prev_pos &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(n_prev_tenures)) + 
-        geom_histogram(breaks=seq(1, 10, by=1), 
-                 col=&quot;red&quot;, 
-                 fill=&quot;green&quot;, 
-                 alpha = .2) + 
-        labs(title=&quot;Donne assunte&quot;, x=&quot;Numero di incarichi precedenti&quot;, y=&quot;Donne&quot;) + 
+female_prev_pos &lt;- ggplot(data=filter(df, gender ==&quot;Female&quot;), aes(n_prev_tenures)) +
+        geom_histogram(breaks=seq(1, 10, by=1),
+                 col=&quot;red&quot;,
+                 fill=&quot;green&quot;,
+                 alpha = .2) +
+        labs(title=&quot;Donne assunte&quot;, x=&quot;Numero di incarichi precedenti&quot;, y=&quot;Donne&quot;) +
         ylim(c(0,10000))
 grid.arrange(male_prev_pos, female_prev_pos,  ncol = 2)
 </code></pre>
@@ -2288,7 +2288,7 @@ grid.arrange(male_prev_pos, female_prev_pos,  ncol = 2)
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWF0cml4X2JlYXV0eV9wcmV2IDwtIGRwbHlyOjpzZWxlY3QoZmVtYWxlc193b3JraW5nLCBiZWF1dHksIG5fcHJldl90ZW51cmVzKSBcbnBsb3QobWF0cml4X2JlYXV0eV9wcmV2KVxuYGBgIn0= -->
-<pre class="r"><code>matrix_beauty_prev &lt;- dplyr::select(females_working, beauty, n_prev_tenures) 
+<pre class="r"><code>matrix_beauty_prev &lt;- dplyr::select(females_working, beauty, n_prev_tenures)
 plot(matrix_beauty_prev)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->

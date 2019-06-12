@@ -1,21 +1,10 @@
 ---
-title: "Linkedin data assessment"
+title: "LINKEDIN DATASET ASSESMENT"
 output: html_notebook
 ---
+### DESCRIZIONE DATASET
+Il dataset assegnatoci contiene i dati di profili LinkedIn anonimi di circa 15000 australiani. Include tutta la storia pregressa dei lavori ottenuti sino a quello corrente, insieme all'analisi particolareggiata delle loro foto.
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
-```{r}
-plot(cars)
-```
-
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
-
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
-
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 Librerie
 
@@ -28,179 +17,185 @@ library(gridExtra)
 library(tidyverse)
 ```
 
-### Descrizione del dataset
+### ESPLORAZIONE DEL DATASET
+A causa della mancanza di metadati dettagliati, sono state assunte le seguenti definizioni per le colonne del dataset.
 
-avg_n_pos_per_prev_tenure : numero medio di posizioni occupate negli incarichi                              precedenti
+**avg_n_pos_per_prev_tenure**: numero medio di posizioni occupate negli incarichi                              precedenti
                         float
 
-aveg_prev_tenure_len : durata media degli incarichi precedenti
+**aveg_prev_tenure_len**: durata media degli incarichi precedenti
                    float
 
-avg_pos_len : la media della durata di ciascuna posizione ricoperta all'interno
+**avg_pos_len** : la media della durata di ciascuna posizione ricoperta all'interno
               dell'azienda attuale
           float
-          
-tenure_len : la durata complessiva di tutte le posizioni ricoperte all'interno               dell'azienda
-         float
-         
-n_prev_tenures : numero di incarichi precedentemente ottenuti
-             integer
-         
-n_pos : numero delle posizioni ricoperte all'interno dell'azienda attuale
-   integer
-   
-m_urn : identificativo dell'utente
-    string
-    
-avg_prev_tenure_len : ?
 
-c_name : nome dell'azienda
+**tenure_len**: la durata complessiva di tutte le posizioni ricoperte all'interno               dell'azienda
+         float
+
+**n_prev_tenures** : numero di incarichi precedentemente ottenuti
+             integer
+
+**n_pos** : numero delle posizioni ricoperte all'interno dell'azienda attuale
+   integer
+
+**m_urn** : identificativo dell'utente
+    string
+
+**avg_prev_tenure_len** : media della durata complessiva degli incarichi precedenti ? ??incluso quello attuale??
+
+**c_name** : nome dell'azienda
      string
 
-age : età dell'utente
+**age** : età dell'utente
   integer
-  
-beauty : percentuale di bellezza. Se l'utente è uomo corrisponde al valore di            beauty_male, mentre se è donna corrisponde al valore di beauty_female.
+
+**beauty** : percentuale di bellezza. Se l'utente è uomo corrisponde al valore di            beauty_male, mentre se è donna corrisponde al valore di beauty_female.
      float
-     
-beauty_male : percentuale di bellezza maschile dell'utente.
+
+**beauty_male** : percentuale di bellezza maschile dell'utente.
            float
-           
-beauty_female : percentuale di bellezza femminile dell'utente.
+
+**beauty_female** : percentuale di bellezza femminile dell'utente.
             float
 
-blur : sfocatura dell'immagine
+**blur** : sfocatura dell'immagine
 integer
 
-blur_gaussian : ?
+**blur_gaussian** : ?
 integer
 
-blur_motion : ?
+**blur_motion **: ?
 integer
 
-emo_anger : valore associato alla rabbia espressa nell'immagine
+**emo_anger **: valore associato alla rabbia espressa nell'immagine
         integer
 
-emo_disgust : valore associato al disgusto espresso nell'immagine
+**emo_disgust **: valore associato al disgusto espresso nell'immagine
          integer
 
-emo_fear : valore associato alla paura espressa nell'immagine
+**emo_fear** : valore associato alla paura espressa nell'immagine
       integer
 
-emo_happines : valore associato alla felicità espressa nell'immagine
+**emo_happines** : valore associato alla felicità espressa nell'immagine
 integer
 
-emo_neutrale : valore associato alla neutralità dell'espressione
+**emo_neutrale** : valore associato alla neutralità dell'espressione
 integer
 
-emo_sadness : valore associato alla tristezza espressa nell'immagine
+**emo_sadness** : valore associato alla tristezza espressa nell'immagine
 integer
 
-emo_surprise : valore associato alla sorpresa espressa nell'immagine
+**emo_surprise** : valore associato alla sorpresa espressa nell'immagine
 integer
 
-ethnicity : etnia dell'utente
+**ethnicity** : etnia dell'utente
         string
 
-face_quality : connotati facciali ?
+**face_quality** : connotati facciali ?
            float
 
-gender : sesso
+**gender** : sesso
      string
 
-glass : variabile che esprime la presenza o meno di occhiali nella foto
+**glass** : variabile che esprime la presenza o meno di occhiali nella foto
     string
-    
-head_pitch : rotazione della testa rispetto all'asse passante per entrambe le                orecchie
+
+**head_pitch** : rotazione della testa rispetto all'asse passante per entrambe le                orecchie
 float
 
-head_roll : rotazione della testa rispetto all'asse perpendicolare al naso
+**head_roll **: rotazione della testa rispetto all'asse perpendicolare al naso
 float
 
-head_yaw : rotazione della testa rispetto all'asse verticale
+**head_yaw** : rotazione della testa rispetto all'asse verticale
 float
 
-img : url dell'immagine dell'utente
+**img** : url dell'immagine dell'utente
 string
 
-mouth_close : chiusura della bocca
+**mouth_close **: chiusura della bocca
 float
 
-mouth_mask : copertura della bocca
+**mouth_mask** : copertura della bocca
 float
 
-mouth_open : apertura della bocca
+**mouth_open** : apertura della bocca
 float
 
-mouth_other : ?
+**mouth_other** : ?
 float
 
-skin_acne : presenza di acne sulla pelle
+**skin_acne** : presenza di acne sulla pelle
 float
 
-skin_dark_circle : presenza di occhiaie 
+**skin_dark_circle** : presenza di occhiaie
 float
 
-skin_health : salute della pelle
+**skin_health **: salute della pelle
 float
 
-skin_stain : presenza di macchie sulla pelle
+**skin_stain** : presenza di macchie sulla pelle
 float
 
-smile : presenza del sorriso
+**smile** : presenza del sorriso
 float
 
-african : valore associato all'etnia africana visibile in foto
+**african** : valore associato all'etnia africana visibile in foto
 float
 
-celtic_english : valore associato all'etnia celtica visibile in foto
+**celtic_english** : valore associato all'etnia celtica visibile in foto
 float
 
-east_asian : valore associato all'etnia est-asiatica visibile in foto
+**east_asian **: valore associato all'etnia est-asiatica visibile in foto
 float
 
-european : valore associato all'etnia europea visibile in foto
+**european **: valore associato all'etnia europea visibile in foto
 float
 
-greek : valore associato all'etnia greca visibile in foto
+**greek **: valore associato all'etnia greca visibile in foto
 float
 
-hispanic : valore associato all'etnia ispanica visibile in foto
+**hispanic **: valore associato all'etnia ispanica visibile in foto
 float
 
-jewish : valore associato all'etnia ebrea visibile in foto
+**jewish **: valore associato all'etnia ebrea visibile in foto
 float
 
-muslim : valore associato all'etnia islamica visibile in foto
-float 
+**muslim** : valore associato all'etnia islamica visibile in foto
+float
 
-nationality : nazionalità
+**nationality **: nazionalità
 string
 
-nordic : valore associato all'etnia nordica visibile in foto
-float 
-
-south_asian : valore associato all'etnia sud-asiatica visibile in foto
+**nordic** : valore associato all'etnia nordica visibile in foto
 float
 
-n_followers : numero di seguaci
+**south_asian **: valore associato all'etnia sud-asiatica visibile in foto
+float
+
+**n_followers **: numero di seguaci
 integer
+
+In base alle assunzioni di cui sopra è stato deciso di non tenere conto delle seguenti colonne, perché non fondamentali nell'analisi dei dati:
+  * ciccio
+  * caui
+
+
+Sotto viene riportato il dataset nella sua interezza:
 ```{r}
 raw_data <- read.csv(file = "linkedin_data.csv")
 raw_data
 ```
 
-Al fine di sviluppare un'analisi sui data relativi alle assunzioni mediante l'uso dei profili Linkedin, si selezionano i campi di interesse: età, sesso, numero di followers, etnia, bellezza, nazionalità, durata media degli incarichi precedenti, nome della compagnia, numero di incarichi precedenti, numero di posizioni ottenute all'interno della stessa azienda, durata dell'incarico attuale, durata media per posizione ottenuta attualmente nell'azienda.
+_Al fine di sviluppare un'analisi sui data relativi alle assunzioni mediante l'uso dei profili Linkedin, si selezionano i campi di interesse: età, sesso, numero di followers, etnia, bellezza, nazionalità, durata media degli incarichi precedenti, nome della compagnia, numero di incarichi precedenti, numero di posizioni ottenute all'interno della stessa azienda, durata dell'incarico attuale, durata media per posizione ottenuta attualmente nell'azienda._
 
-_hé la maggior parte delle persone presenti nel dataset sono bianchi, per poter trarre delle statistiche significative, si è deciso di accomunare in un'unica categoria (Other) le persone asiatiche e di pelle nera. ??????_
+_Quindi se la persona ha assunto n posizioni diverse, allora avg_pos_len = tenute_len / n._
 
-_Vedere se riusciamo ad eliminare qualche riga seguendo qualche parametro particolare per cui pensiamo che alcune persone non debbano essere prese in considerazione nell'analisi._
-n_pos indica il numero di posizioni che la persona ha occupato all'interno dell'azienda. tenure_len:durata totale di tutti i suoi incarichi all'interno dell'azienda. Avg_pos_len indica la durata media associata ad ogni posizione. Quindi se la persona ha assunto n posizioni diverse, allora avg_pos_len = tenute_len / n.
-
-
+Dopo un'attenta osservazione delle righe del dataset, si è notato che a ciascuna di queste corrisponde non una persona, ma un incarico da essa ottenuto. Per questo motivo a ciascuna persona sono state associate più righe e questo giustifica la dimensione del dataset.
+E' stato deciso di tenere conto solamente dell'occupazione più recente, che riassume l'intera carriera del singolo individuo. In questo modo si è ridimensionato il dataset a 15252 righe, rispetto le iniziali 62709
 ```{r}
 df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
-                   ethnicity, gender, nationality, n_followers, m_urn, smile)%>%
+                   ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
         filter(tenure_len > 0) %>%
         group_by(m_urn) %>%
         arrange(desc(n_prev_tenures)) %>%
@@ -208,12 +203,24 @@ df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n
 nrow(df)
 df
 ```
+```{r}
+plot(df$tenure_len, df$smile, type = "h", main = "lala", col = "Red")
+```
+#### RICERCA DEI CAMPI DI INTERESSE
+Si analizza il dataset risultante per individuare delle prime disuguaglianze riguardanti gli attributi.
 
-Guardiamo la ripartizione demografica della popolazione nel nostro dataset.
-
+###### ethnicity
+Si guarda la ripartizione demografica della popolazione.
+Come si evince dai risultati sotto riportati, vi è una marcata discrepanza tra i bianchi e le altre etnie. Anche nel caso in cui venissero unite le minoranze, tale disuguaglianza viene mantenuta.
+Tali proporzioni rispecchiano quelle dei dati demografici australiani.
 ```{r}
 summary(df$ethnicity)
 ```
+
+
+
+
+
 ```{r}
 summary(df$gender)
 ```
@@ -232,89 +239,150 @@ xtabs(~ gender + ethnicity, data=df)
 ```{r}
 xtabs(~ nationality + ethnicity, data=df)
 ```
-
 ```{r}
-h_male_total <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="violet", 
-                 fill="pink", 
-                 alpha = .9) + 
-        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+p_male <- ggplot(data=filter(df, gender =="Male"), aes(ordered(tenure_len))) +
+          geom_bar() + xlab("Durata dell'incarico ottenuto") +
+          ylim(0, 1300) + ggtitle("Assunti uomini")
+p_female <- ggplot(data=filter(df, gender =="Female"), aes(ordered(tenure_len))) +
+          geom_bar() + xlab("Durata dell'incarico ottenuto") +
+          ylim(0, 500) + ggtitle("Assunte donne")
+grid.arrange(p_male, p_female,  ncol = 2)
+```
+```{r}
+h_male_high <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(10000, 22000, by=1000), 
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") +
         ylim(c(0,11602))
-h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="blue", 
-                 fill="lightblue", 
-                 alpha = .9) + 
-        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") +
         ylim(c(0,3650))
 title <- textGrob("Distribuzione totale di lavoratori e lavoratrici", gp=gpar(fontsize=15, font=1))
 grid.arrange(h_male_total, h_female_total,  ncol = 2, top=title)
 ```
 ```{r}
-h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 3000, by=100), 
-                 col="violet", 
-                 fill="pink", 
-                 alpha = .9) + 
-        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 2000, by=100),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") +
         ylim(c(0,1450))
-h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 3000, by=100), 
-                 col="blue", 
-                 fill="lightblue", 
-                 alpha = .9) + 
-        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
+h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 2000, by=100),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") +
         ylim(c(0, 456))
 title <- textGrob("Distribuzione di lavoratori e lavoratrici per breve periodo\n(fino a poco più di un anno)", gp=gpar(fontsize=15, font=1))
 grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)
 ```
-
 ```{r}
-h_male_high <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(3000, 22000, by=1000), 
-                 col="violet", 
-                 fill="pink", 
-                 alpha = .9) + 
-        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") + 
-        ylim(c(0,400))
-h_female_high <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(3000, 22000, by=1000), 
-                 col="blue", 
-                 fill="lightblue", 
-                 alpha = .9) + 
-        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") + 
-        ylim(c(0,400))
-title <- textGrob("Distribuzione di lavoratori e lavoratrici per lungo periodo\n(più di un anno)", gp=gpar(fontsize=15, font=1))
-grid.arrange(h_male_high, h_female_high,  ncol = 2, top=title)
-
+h_male_total <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Uomini assunti", x="Durata dell'incarico (ore)", y="Numero assunti") +
+        ylim(c(0,50000))
+h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Donne assunte", x="Durata dell'incarico (ore)", y="Numero assunte") +
+        ylim(c(0,50000))
+grid.arrange(h_male_total, h_female_total,  ncol = 2)
 ```
 
+```{r}
+# Calcoliamo le percentuali di donne che e uomini che lavorano nelle seguenti fasce:
+# - low: che va da 0 ore a 5000
+# - medium: che va da 5000 a 15000
+# - high: che va da 15000 a 22000
+
+low_female <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Female") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_female)
+low_female_perc <- nrow(low_female) * 100 / 14773
+low_female_perc
+
+medium_female <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Female") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_female)
+medium_female_perc <- nrow(medium_female) * 100 / 14773
+medium_female_perc
+
+high_female <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Female") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_female)
+high_female_perc <- nrow(high_female) * 100 / 14773
+high_female_perc
+
+
+
+
+low_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<5000) %>%
+        filter (tenure_len>0)
+nrow(low_male)
+low_male_perc <- nrow(low_male) * 100 / 47425
+low_male_perc
+
+medium_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<15000) %>%
+        filter (tenure_len>=5000)
+nrow(medium_male)
+medium_male_perc <- nrow(medium_male) * 100 / 47425
+medium_male_perc
+
+high_male <- dplyr::select(df, gender, tenure_len) %>%
+        filter(gender == "Male") %>%
+        filter(tenure_len<22000) %>%
+        filter (tenure_len>=15000)
+nrow(high_male)
+high_male_perc <- nrow(high_male) * 100 / 47425
+```
 Non sembra ci siano particolari discriminazioni nelle distribuzioni della durata dell'incarico per genere, tuttavia va tenuto in conto il fatto che le aziende analizzate siano tutte aziende informatiche e probabilmente non è un caso che le donne presenti nel dataset siano di numero molto inferiore agli uomini.
 
 Ripetiamo la stessa analisi condotta sui generi anche sulle diverse etnie.
 
 ```{r}
-h_black_total <- ggplot(data=filter(df, ethnicity=="Black"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="white", 
-                 fill="yellow", 
-                 alpha = .9) + 
-        labs(title="Persone assunte di etnia nera", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+h_black_total <- ggplot(data=filter(df, ethnicity=="Black"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col="white",
+                 fill="yellow",
+                 alpha = .9) +
+        labs(title="Persone assunte di etnia nera", x="Durata dell'incarico (ore)", y="Numero assunti") +
         ylim(c(0,1225))
-h_asian_total <- ggplot(data=filter(df, ethnicity=="Asian"), aes(tenure_len)) + 
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="black", 
-                 fill="white", 
-                 alpha = .9) + 
-        labs(title="Persone assunte di etnia asiatica", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+h_asian_total <- ggplot(data=filter(df, ethnicity=="Asian"), aes(tenure_len)) +
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col="black",
+                 fill="white",
+                 alpha = .9) +
+        labs(title="Persone assunte di etnia asiatica", x="Durata dell'incarico (ore)", y="Numero assunti") +
         ylim(c(0,2593))
 h_white_total <- ggplot(data=filter(df, ethnicity =="White"), aes(tenure_len)) +
-        geom_histogram(breaks=seq(0, 22000, by=2000), 
-                 col="yellow", 
-                 fill="black", 
-                 alpha = .9) + 
-        labs(title="Persone assunte di etnia bianca", x="Durata dell'incarico (ore)", y="Numero assunti") + 
+        geom_histogram(breaks=seq(0, 22000, by=2000),
+                 col="yellow",
+                 fill="black",
+                 alpha = .9) +
+        labs(title="Persone assunte di etnia bianca", x="Durata dell'incarico (ore)", y="Numero assunti") +
         ylim(c(0,11434))
 title <- textGrob("Distribuzione totale di lavoratori per etnia", gp=gpar(fontsize=15, font=1))
 grid.arrange(h_black_total, h_asian_total, h_white_total,  ncol = 2, top=title)
@@ -419,19 +487,19 @@ Le percentuali di asiatici, bianchi e neri non assunti è esattamente identica a
 
 Istogrammi che mostrano la distribuzione della bellezza per uomini e donne assunti.
 ```{r}
-beauty_male <- ggplot(data=filter(df, gender =="Male"), aes(beauty_male)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Uomini assunti", x="Valutazione della bellezza", y="Numero assunti") + 
+beauty_male <- ggplot(data=filter(df, gender =="Male"), aes(beauty_male)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Uomini assunti", x="Valutazione della bellezza", y="Numero assunti") +
         ylim(c(0,10000))
-beauty_female <- ggplot(data=filter(df, gender =="Female"), aes(beauty_female)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Donne assunte", x="Valutazione della bellezza", y="Numero assunte") + 
+beauty_female <- ggplot(data=filter(df, gender =="Female"), aes(beauty_female)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Donne assunte", x="Valutazione della bellezza", y="Numero assunte") +
         ylim(c(0,10000))
 grid.arrange(beauty_male, beauty_female,  ncol = 2)
 ```
@@ -439,19 +507,19 @@ Dovremmo però vedere se i belli sono assunti per più tempo oppure no.
 
 Istogrammi che mostrano la distribuzione della bellezza per uomini e donne non assunti.
 ```{r}
-beauty_male_not_w <- ggplot(data=filter(not_working, gender =="Male"), aes(beauty)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Uomini non assunti", x="Valutazione della bellezza", y="Numero non assunti") + 
+beauty_male_not_w <- ggplot(data=filter(not_working, gender =="Male"), aes(beauty)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Uomini non assunti", x="Valutazione della bellezza", y="Numero non assunti") +
         ylim(c(0,100))
-beauty_female_not_w <- ggplot(data=filter(not_working, gender =="Female"), aes(beauty)) + 
-        geom_histogram(breaks=seq(0, 100, by=5), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Donne non assunte", x="Valutazione della bellezza", y="Numero non assunte") + 
+beauty_female_not_w <- ggplot(data=filter(not_working, gender =="Female"), aes(beauty)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Donne non assunte", x="Valutazione della bellezza", y="Numero non assunte") +
         ylim(c(0,100))
 grid.arrange(beauty_male_not_w, beauty_female_not_w,  ncol = 2)
 ```
@@ -463,13 +531,13 @@ plot(matrix_beauty_len)
 females_working <- dplyr::select(df, beauty, tenure_len, gender, n_prev_tenures) %>%
         filter (gender == "Female")
 nrow(females_working)
-matrix_beauty_len_female <- dplyr::select(females_working, beauty, tenure_len) 
+matrix_beauty_len_female <- dplyr::select(females_working, beauty, tenure_len)
 plot(matrix_beauty_len_female)
 ```
 ```{r}
 males_working <- dplyr::select(df, beauty, tenure_len, gender) %>%
         filter (gender == "Male")
-matrix_beauty_len_male <- dplyr::select(males_working, beauty, tenure_len) 
+matrix_beauty_len_male <- dplyr::select(males_working, beauty, tenure_len)
 plot(matrix_beauty_len_male)
 ```
 
@@ -483,31 +551,24 @@ plot(matrix_followers_len)
 ```
 
 ```{r}
-male_prev_pos <- ggplot(data=filter(df, gender =="Male"), aes(n_prev_tenures)) + 
-        geom_histogram(breaks=seq(1, 10, by=1), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Uomini assunti", x="Numero di incarichi precedenti", y="Uomini") + 
+male_prev_pos <- ggplot(data=filter(df, gender =="Male"), aes(n_prev_tenures)) +
+        geom_histogram(breaks=seq(1, 10, by=1),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Uomini assunti", x="Numero di incarichi precedenti", y="Uomini") +
         ylim(c(0,10000))
-female_prev_pos <- ggplot(data=filter(df, gender =="Female"), aes(n_prev_tenures)) + 
-        geom_histogram(breaks=seq(1, 10, by=1), 
-                 col="red", 
-                 fill="green", 
-                 alpha = .2) + 
-        labs(title="Donne assunte", x="Numero di incarichi precedenti", y="Donne") + 
+female_prev_pos <- ggplot(data=filter(df, gender =="Female"), aes(n_prev_tenures)) +
+        geom_histogram(breaks=seq(1, 10, by=1),
+                 col="red",
+                 fill="green",
+                 alpha = .2) +
+        labs(title="Donne assunte", x="Numero di incarichi precedenti", y="Donne") +
         ylim(c(0,10000))
 grid.arrange(male_prev_pos, female_prev_pos,  ncol = 2)
 
 ```
 ```{r}
-matrix_beauty_prev <- dplyr::select(females_working, beauty, n_prev_tenures) 
+matrix_beauty_prev <- dplyr::select(females_working, beauty, n_prev_tenures)
 plot(matrix_beauty_prev)
 ```
-```{r}
-```{r}
-plot(df$smile, df$tenure_len, main = "Correlazione tra il sorriso mostrato in foto e la lunghezza dell'incarico ottenuto", col = "Red")
-```
-Si può evincere che non c'è correlazione tra la lunghezza dell'incarico e il sorriso
-```
-
