@@ -1,15 +1,16 @@
 ---
-title: "LINKEDIN DATASET ASSESMENT"
-output: html_notebook
+title: "**LINKEDIN DATASET ASSESMENT**"
+#"Andrulli Martina, Corso Eugenio, Corso Gabriele, Riccio Piera, Sarti Federica"
+output:
+  html_notebook: default
+fontsize: 14pt
 ---
-### DESCRIZIONE DATASET
+### **DESCRIZIONE DATASET**
 Il dataset assegnatoci contiene i dati di profili LinkedIn anonimi di circa 15000 australiani. Include tutta la storia pregressa dei lavori ottenuti sino a quello corrente, insieme all'analisi particolareggiata delle loro foto.
 
 
 Librerie
-
 ```{r}
-
 library(dplyr)
 library(ggplot2)
 library(grid)
@@ -17,168 +18,117 @@ library(gridExtra)
 library(tidyverse)
 ```
 
-### ESPLORAZIONE DEL DATASET
+### **ESPLORAZIONE DEL DATASET**
 A causa della mancanza di metadati dettagliati, sono state assunte le seguenti definizioni per le colonne del dataset.
 
-**avg_n_pos_per_prev_tenure**: numero medio di posizioni occupate negli  incarichi                              precedenti
-                        float
-
-**avg_prev_tenure_len**: durata media degli incarichi precedenti
-                   float
-
-**avg_pos_len** : la media della durata di ciascuna posizione ricoperta all'interno
-              dell'azienda attuale
-          float
-
-**tenure_len**: la durata complessiva di tutte le posizioni ricoperte all'interno               dell'azienda
-         float
-
-**n_prev_tenures** : numero di incarichi precedentemente ottenuti
-             integer
-
-**n_pos** : numero delle posizioni ricoperte all'interno dell'azienda attuale
-   integer
-
-**m_urn** : identificativo dell'utente
-    string
-
-**avg_prev_tenure_len** : media della durata complessiva degli incarichi precedenti ? ??incluso quello attuale??
-
-**c_name** : nome dell'azienda
-     string
-
-**age** : età dell'utente
-  integer
-
-**beauty** : percentuale di bellezza. Se l'utente è uomo corrisponde al valore di            beauty_male, mentre se è donna corrisponde al valore di beauty_female.
-     float
-
-**beauty_male** : percentuale di bellezza maschile dell'utente.
-           float
-
-**beauty_female** : percentuale di bellezza femminile dell'utente.
-            float
-
-**blur** : sfocatura dell'immagine
-integer
-
-**blur_gaussian** : ?
-integer
-
-**blur_motion **: ?
-integer
-
-**emo_anger **: valore associato alla rabbia espressa nell'immagine
-        integer
-
-**emo_disgust **: valore associato al disgusto espresso nell'immagine
-         integer
-
-**emo_fear** : valore associato alla paura espressa nell'immagine
-      integer
-
-**emo_happines** : valore associato alla felicità espressa nell'immagine
-integer
-
-**emo_neutrale** : valore associato alla neutralità dell'espressione
-integer
-
-**emo_sadness** : valore associato alla tristezza espressa nell'immagine
-integer
-
-**emo_surprise** : valore associato alla sorpresa espressa nell'immagine
-integer
-
-**ethnicity** : etnia dell'utente
-        string
-
-**face_quality** : connotati facciali ?
-           float
-
-**gender** : sesso
-     string
-
-**glass** : variabile che esprime la presenza o meno di occhiali nella foto
-    string
-
-**head_pitch** : rotazione della testa rispetto all'asse passante per entrambe le                orecchie
-float
-
-**head_roll **: rotazione della testa rispetto all'asse perpendicolare al naso
-float
-
-**head_yaw** : rotazione della testa rispetto all'asse verticale
-float
-
-**img** : url dell'immagine dell'utente
-string
-
-**mouth_close **: chiusura della bocca
-float
-
-**mouth_mask** : copertura della bocca
-float
-
-**mouth_open** : apertura della bocca
-float
-
-**mouth_other** : ?
-float
-
-**skin_acne** : presenza di acne sulla pelle
-float
-
-**skin_dark_circle** : presenza di occhiaie
-float
-
-**skin_health **: salute della pelle
-float
-
-**skin_stain** : presenza di macchie sulla pelle
-float
-
-**smile** : presenza del sorriso
-float
-
-**african** : valore associato all'etnia africana visibile in foto
-float
-
-**celtic_english** : valore associato all'etnia celtica visibile in foto
-float
-
-**east_asian **: valore associato all'etnia est-asiatica visibile in foto
-float
-
-**european **: valore associato all'etnia europea visibile in foto
-float
-
-**greek **: valore associato all'etnia greca visibile in foto
-float
-
-**hispanic **: valore associato all'etnia ispanica visibile in foto
-float
-
-**jewish **: valore associato all'etnia ebrea visibile in foto
-float
-
-**muslim** : valore associato all'etnia islamica visibile in foto
-float
-
-**nationality **: nazionalità
-string
-
-**nordic** : valore associato all'etnia nordica visibile in foto
-float
-
-**south_asian **: valore associato all'etnia sud-asiatica visibile in foto
-float
-
-**n_followers **: numero di seguaci
-integer
+1. **avg_n_pos_per_prev_tenure**: numero medio di posizioni occupate negli  incarichi                              precedenti
+                        [float]
+2. **avg_prev_tenure_len**: durata media degli incarichi precedenti
+                   [float]
+3. **avg_pos_len** : la media della durata di ciascuna posizione ricoperta all'interno dell'azienda attuale
+          [float]
+4. **tenure_len**: la durata complessiva di tutte le posizioni ricoperte all'interno               dell'azienda
+         [float]
+5. **n_prev_tenures** : numero di incarichi precedentemente ottenuti
+             [integer]
+6. **n_pos** : numero delle posizioni ricoperte all'interno dell'azienda attuale
+   [integer]
+7. **m_urn** : identificativo dell'utente
+    [string]
+8. **avg_prev_tenure_len** : media della durata complessiva degli incarichi precedenti ? ??incluso quello attuale??
+9. **c_name** : nome dell'azienda
+     [string]
+10. **age** : età dell'utente
+  [integer]
+11. **beauty** : percentuale di bellezza. Se l'utente è uomo corrisponde al valore di beauty_male, mentre se è donna corrisponde al valore di beauty_female
+     [float]
+12. **beauty_male** : percentuale di bellezza maschile dell'utente
+           [float]
+13. **beauty_female** : percentuale di bellezza femminile dell'utente
+            [float]
+14. **blur** : sfocatura dell'immagine
+[integer]
+15. **blur_gaussian** : ?
+[integer]
+16. **blur_motion **: ?
+[integer]
+17. **emo_anger **: valore associato alla rabbia espressa nell'immagine
+        [integer]
+18. **emo_disgust **: valore associato al disgusto espresso nell'immagine
+         [integer]
+19. **emo_fear** : valore associato alla paura espressa nell'immagine
+      [integer]
+20. **emo_happines** : valore associato alla felicità espressa nell'immagine
+[integer]
+21. **emo_neutrale** : valore associato alla neutralità dell'espressione
+[integer]
+22. **emo_sadness** : valore associato alla tristezza espressa nell'immagine
+[integer]
+23. **emo_surprise** : valore associato alla sorpresa espressa nell'immagine
+[integer]
+24. **ethnicity** : etnia dell'utente
+        [string]
+25. **face_quality** : connotati facciali ?
+           [float]
+26. **gender** : sesso
+     [string]
+27. **glass** : variabile che esprime la presenza o meno di occhiali nella foto
+    [string]
+28. **head_pitch** : rotazione della testa rispetto all'asse passante per entrambe le orecchie
+[float]
+29. **head_roll **: rotazione della testa rispetto all'asse perpendicolare al naso
+[float]
+30. **head_yaw** : rotazione della testa rispetto all'asse verticale
+[float]
+31. **img** : url dell'immagine dell'utente
+[string]
+32. **mouth_close **: chiusura della bocca
+[float]
+33. **mouth_mask** : copertura della bocca
+[float]
+34. **mouth_open** : apertura della bocca
+[float]
+35. **mouth_other** : ?
+[float]
+36. **skin_acne** : presenza di acne sulla pelle
+[float]
+37. **skin_dark_circle** : presenza di occhiaie
+[float]
+38. **skin_health **: salute della pelle
+[float]
+39. **skin_stain** : presenza di macchie sulla pelle
+[float]
+40. **smile** : presenza del sorriso
+[float]
+41. **african** : valore associato all'etnia africana visibile in foto
+[float]
+42. **celtic_english** : valore associato all'etnia celtica visibile in foto
+[float]
+43. **east_asian **: valore associato all'etnia est-asiatica visibile in foto
+[float]
+44. **european **: valore associato all'etnia europea visibile in foto
+[float]
+45. **greek **: valore associato all'etnia greca visibile in foto
+[float]
+46. **hispanic **: valore associato all'etnia ispanica visibile in foto
+[float]
+47. **jewish **: valore associato all'etnia ebrea visibile in foto
+[float]
+48. **muslim** : valore associato all'etnia islamica visibile in foto
+[float]
+49. **nationality **: nazionalità
+[string]
+50.**nordic** : valore associato all'etnia nordica visibile in foto
+[float]
+51. **south_asian **: valore associato all'etnia sud-asiatica visibile in foto
+[float]
+52. **n_followers **: numero di seguaci
+[integer]
 
 In base alle assunzioni di cui sopra è stato deciso di non tenere conto delle seguenti colonne, perché non fondamentali nell'analisi dei dati:
-  * ciccio
-  * caui
+
+* ciccio
+* caui
 
 
 Sotto viene riportato il dataset nella sua interezza:
@@ -211,13 +161,15 @@ df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n
         filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
 
 nrow(df)
-df
 ```
 
-#### RICERCA DEI CAMPI DI INTERESSE
+
+
+
+#### **RICERCA DEI CAMPI DI INTERESSE**
 Si analizza ora il dataset risultante per individuare delle prime disuguaglianze riguardanti gli attributi.
 
-###### ethnicity
+##### **Ethnicity**
 Si guarda la ripartizione demografica della popolazione.
 Come si evince dai risultati sotto riportati, vi è una marcata discrepanza tra i bianchi e le altre etnie. Anche nel caso in cui venissero unite le minoranze, tale disuguaglianza viene mantenuta.
 Tali proporzioni rispecchiano quelle dei dati demografici australiani. 
@@ -227,7 +179,7 @@ n_white <- nrow(df[df$ethnicity=="White",])
 n_black <- nrow(df[df$ethnicity=="Black",])
 n_asian <- nrow(df[df$ethnicity=="Asian",])
 ```
-###### gender
+##### **Gender**
 L'analisi svolta sul genere mostra una disparità tra uomini e donne assunti. 
 Bisogna tuttavvia tenere in considerazione il fatto che le aziende presenti nel dataset sono per la maggior parrte aziende informatiche e ciò potrebbe aver influito fortemente sui dati. 
 Nel caso in cui il dataset dovesse venir utilizzato per allenare un modello predittivo, tali valori rappresenterebbero un alto fattore di rischio. In uno scenario del genere, infatti, potrebbero essere favoriti individui di sesso maschile rispetto a quelli di sesso femminile.
@@ -236,7 +188,7 @@ summary(df$gender)
 n_males <- nrow(df[df$gender=="Male",])
 n_females <- nrow(df[df$gender=="Female",])
 ```
-###### nationality
+##### **Nationality**
 Per quanto riguarda la nazionalità emergono alcuni gruppi di minoranze (ad esempio greci e africani), mentre la maggioranza è rappresentata dagli inglesi celtici. 
 Tali valori però rispecchiano la storia del Paese, che è stato colonizzato per oltre due secoli dall'impero brittannico. 
 _discorso su attributi sensibili rispetto alla legge_
@@ -250,7 +202,7 @@ round( summary(df$nationality) / nrow(df) * 100, 2)
 ```
 
 
-######tenure_len
+##### **Tenure_len**
 Si eseguono ora delle analisi che prendono a riferimento la durata dell'impiego. 
 Nei grafici sono stati sempre utilizzati limiti sull'asse y che risultano essere proporzionali al numero totale di persone appartenenti a una certa categoria nell'intero dataset.
 
@@ -393,10 +345,9 @@ title <- textGrob("Distribuzione dei lavoratori per lungo periodo divisi per etn
 grid.arrange(h_black_high, h_asian_high, h_white_high, ncol = 2, top=title)
 ```
 
-##### not working
+#### **Not working**
 A questo punto è stato ritenuto opportuno considerare una parte di dati grezzi inizialmente scartati, ossia coloro che presentavano nel campo *tenure_len* valori nulli. 
 Purtroppo l'esito è marginale rispetto al resto del dataset e dunque non può essere considerato un valido termine di paragone. 
- 
 
 ```{r}
 not_working <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
@@ -409,7 +360,6 @@ not_working <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name,
         filter(age<65)%>%
         filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
 nrow(not_working)
-
 ```
 
 Per completezza sono state effettuate analisi rispetto al genere e all'etnia sull'insieme dei non assunti. 
@@ -456,7 +406,7 @@ perc_table
 ```
 
 
-###### beauty 
+##### **beauty **
 Mantenendo la separazione tra assunti e non assunti, si è posta l'attenzione sulle caratteristiche fisiche della persona. 
 Gli istogrammi non solo non fanno emergere alcuna differenza tra i picchi di bellezza degli assunti e i non assunti, ma addirittura sono straordinariamente simili tra generi. 
 ```{r}
