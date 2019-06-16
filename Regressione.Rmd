@@ -1,0 +1,45 @@
+---
+title: "ProvaRegressione"
+output: html_document
+---
+```{r}
+library(dplyr)
+
+```
+
+```{r}
+df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
+                   ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)
+nrow(df)
+df
+```
+
+```{r}
+library(readxl)
+lmTenure = lm(tenure_len~beauty + gender + ethnicity, data = df) #Create the linear regression
+summary(lmTenure) #Review the results
+plot(lmTenure$residuals, pch = 16, col = "red")
+```
+
+Supponiamo di voler analizzare i risultati relativi all'attributo bellezza.
+Il valore segnato come (Intercept), 1493.4517, rappresenta il valore di interserzione (indichiamolo come a), mentre il valore Age quello di pendenza, -10.5939 (indichiamolo come b) per l'età. Questi valori "a" e "b" rappresentano graficamente una linea passante tra tutti i punti del dataset. In questo caso, se è presente un lavoratore con una bellezza pari al 60 percento, il modello predice (in media) che la sua tenure_len sarà intorno ai 1493.4517 + (-10.5939*60).
+
+Il valore Pr(>|t|) sta ad indicare se si può accettare o meno un'ipotesi. L'ipotesi, in questo caso, è che la variabile scelta in (chiamiamola predictor) sia significativa per il nostro modello.
+Il valore di Pr per la bellezza è minore di 2e-16, un numero estremamente piccolo. Questo significa che la bellezza è effettivamente significativa nel modello di analisi della lunghezza della prestazione.
+Il valore di Pr dell'etnia Nera invece è di 0.20614. Questo significa che, esiste il 20% di possibilità che il predictor in questione non sia significativo per la regressione.
+
+Un buon modo per testare la qualità del modello nel "fittare" i dati st anel guardare il valore dei residui o le differenze tra i valori reali e quelli predetti. 
+L'idea è che la somma dei residui debba essere approssimativamente zero o la più bassa possibile. E' possibile vedere le statistiche descrittive dei residui, nel sommario sovrastante. (NEL NOSTRO CASO FA VERAMENTE SCHIFO PERCHé ABBIAMO VALORI -1412.3  -726.4  -378.2   246.2 20880.0 --> PERCHE'?)
+
+Una misura usata per testare quanto il modello di regressione sia accurato, è il coefficiente di determinazione o R², la cui misura è definita dalla proporzione della variabilità totale spiegata dal modello e la variazione totale del modello. Per i modelli che "fittano" bene i dati, R² è circa 1. Modelli che fittano poco i dari, R² near 0. 
+Nel nostro caso, il valore assunto è indicato da (Multiple R-squared:  0.01432) , il che significa che il modello è in grado di spiegare solo l'1.4% della variabilità dei dati.
+
+
+
+
+
+
