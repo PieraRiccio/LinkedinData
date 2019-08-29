@@ -1,0 +1,885 @@
+---
+title: "**LINKEDIN DATASET ASSESMENT**"
+#"Andrulli Martina, Corso Eugenio, Corso Gabriele, Riccio Piera, Sarti Federica"
+output:
+  html_notebook: default
+---
+### **DESCRIZIONE DATASET**
+Il dataset assegnatoci contiene i dati di profili LinkedIn anonimi di circa 15000 australiani. Include tutta la storia pregressa dei lavori ottenuti sino a quello corrente, insieme all'analisi particolareggiata delle loro foto.
+  
+Librerie
+```{r}
+library(dplyr)
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(tidyverse)
+```
+  
+### **ESPLORAZIONE DEL DATASET**
+A causa della mancanza di metadati dettagliati, sono state assunte le seguenti definizioni per le colonne del dataset.
+
+1. **avg_n_pos_per_prev_tenure**: numero medio di posizioni occupate negli  incarichi                              precedenti
+                        [float]
+2. **avg_prev_tenure_len**: durata media degli incarichi precedenti
+                   [float]
+3. **avg_pos_len** : la media della durata di ciascuna posizione ricoperta all'interno dell'azienda attuale
+          [float]
+4. **tenure_len**: la durata complessiva di tutte le posizioni ricoperte all'interno               dell'azienda
+         [float]
+5. **n_prev_tenures** : numero di incarichi precedentemente ottenuti
+             [integer]
+6. **n_pos** : numero delle posizioni ricoperte all'interno dell'azienda attuale
+   [integer]
+7. **m_urn** : identificativo dell'utente
+    [string]
+8. **avg_prev_tenure_len** : media della durata complessiva degli incarichi precedenti ? ??incluso quello attuale??
+9. **c_name** : nome dell'azienda
+     [string]
+10. **age** : età dell'utente
+  [integer]
+11. **beauty** : percentuale di bellezza. Se l'utente è uomo corrisponde al valore di beauty_male, mentre se è donna corrisponde al valore di beauty_female
+     [float]
+12. **beauty_male** : percentuale di bellezza maschile dell'utente
+           [float]
+13. **beauty_female** : percentuale di bellezza femminile dell'utente
+            [float]
+14. **blur** : sfocatura dell'immagine
+[integer]
+15. **blur_gaussian** : ?
+[integer]
+16. **blur_motion **: ?
+[integer]
+17. **emo_anger **: valore associato alla rabbia espressa nell'immagine
+        [integer]
+18. **emo_disgust **: valore associato al disgusto espresso nell'immagine
+         [integer]
+19. **emo_fear** : valore associato alla paura espressa nell'immagine
+      [integer]
+20. **emo_happines** : valore associato alla felicità espressa nell'immagine
+[integer]
+21. **emo_neutrale** : valore associato alla neutralità dell'espressione
+[integer]
+22. **emo_sadness** : valore associato alla tristezza espressa nell'immagine
+[integer]
+23. **emo_surprise** : valore associato alla sorpresa espressa nell'immagine
+[integer]
+24. **ethnicity** : etnia dell'utente
+        [string]
+25. **face_quality** : connotati facciali ?
+           [float]
+26. **gender** : sesso
+     [string]
+27. **glass** : variabile che esprime la presenza o meno di occhiali nella foto
+    [string]
+28. **head_pitch** : rotazione della testa rispetto all'asse passante per entrambe le orecchie
+[float]
+29. **head_roll **: rotazione della testa rispetto all'asse perpendicolare al naso
+[float]
+30. **head_yaw** : rotazione della testa rispetto all'asse verticale
+[float]
+31. **img** : url dell'immagine dell'utente
+[string]
+32. **mouth_close **: chiusura della bocca
+[float]
+33. **mouth_mask** : copertura della bocca
+[float]
+34. **mouth_open** : apertura della bocca
+[float]
+35. **mouth_other** : ?
+[float]
+36. **skin_acne** : presenza di acne sulla pelle
+[float]
+37. **skin_dark_circle** : presenza di occhiaie
+[float]
+38. **skin_health **: salute della pelle
+[float]
+39. **skin_stain** : presenza di macchie sulla pelle
+[float]
+40. **smile** : presenza del sorriso
+[float]
+41. **african** : valore associato all'etnia africana visibile in foto
+[float]
+42. **celtic_english** : valore associato all'etnia celtica visibile in foto
+[float]
+43. **east_asian **: valore associato all'etnia est-asiatica visibile in foto
+[float]
+44. **european **: valore associato all'etnia europea visibile in foto
+[float]
+45. **greek **: valore associato all'etnia greca visibile in foto
+[float]
+46. **hispanic **: valore associato all'etnia ispanica visibile in foto
+[float]
+47. **jewish **: valore associato all'etnia ebrea visibile in foto
+[float]
+48. **muslim** : valore associato all'etnia islamica visibile in foto
+[float]
+49. **nationality **: nazionalità
+[string]
+50.**nordic** : valore associato all'etnia nordica visibile in foto
+[float]
+51. **south_asian **: valore associato all'etnia sud-asiatica visibile in foto
+[float]
+52. **n_followers **: numero di seguaci
+[integer]
+
+In base alle assunzioni di cui sopra è stato deciso di non tenere conto delle seguenti colonne, perché non ritenutefondamentali nell'analisi dei dati:
+
+* ciccio
+* caui
+
+Sotto viene riportato il dataset nella sua interezza:
+```{r}
+raw_data <- read.csv(file = "linkedin_data.csv")
+raw_data
+```
+_Al fine di sviluppare un'analisi sui data relativi alle assunzioni mediante l'uso dei profili Linkedin, si selezionano i campi di interesse: età, sesso, numero di followers, etnia, bellezza, nazionalità, durata media degli incarichi precedenti, nome della compagnia, numero di incarichi precedenti, numero di posizioni ottenute all'interno della stessa azienda, durata dell'incarico attuale, durata media per posizione ottenuta attualmente nell'azienda._
+
+_Quindi se la persona ha assunto n posizioni diverse, allora avg_pos_len = tenute_len / n._
+
+Dopo un attento studio del dataset, si è notato che a ciascuna riga non corrisponde una persona, bensì un incarico da essa ottenuto. Tale relazione giustifica la dimensione del dataset.
+Di conseguenza è stato deciso di tenere conto solamente dell'occupazione più recente, che si è osservato riassumere l'intera carriera del singolo individuo. In questo modo è stato possibile ridimensionare il dataset a 15252 righe, rispetto alle iniziali 62709.
+
+Si sono inotre riscontrati alcuni errori sui dati riguardanti la *tenure_len*, dove le ore complessive lavorate superavano l'età dell'individuo. E' stato introdotto a questo proposito un filtro che eliminasse tale inesattezza. 
+
+Sono stati selezionati infine i profili di coloro che fossero compresi tra i 16 anni (termine della scuola dell'obbligo) e i 65 anni (età pensionabile), ottenendo di conseguenza un dataset di 14747 righe. 
+```{r}
+h_working_per_year <- 48*5*8
+
+df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
+                   ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
+
+nrow(df)
+
+
+```
+ 
+          
+#### **RICERCA DEI CAMPI DI INTERESSE**
+Si analizza ora il dataset risultante per individuare delle prime disuguaglianze riguardanti gli attributi.
+
+##### **Ethnicity**
+I risultati hanno rivelato una marcata discrepanza tra i bianchi e le altre etnie. Anche nel caso in cui venissero unite le minoranze, tale disuguaglianza verrebbe mantenuta.
+Tali proporzioni rispecchiano approssivativamente quelle dei dati demografici australiani (v.[ DeAWING](http://www.deagostinigeografia.it/wing/schedapaese.jsp?idpaese=011)).
+```{r}
+summary(df$ethnicity)
+n_white <- nrow(df[df$ethnicity=="White",])
+n_black <- nrow(df[df$ethnicity=="Black",])
+n_asian <- nrow(df[df$ethnicity=="Asian",])
+```
+  
+##### **Gender**
+L'analisi svolta sul genere ha mostrato una disparità tra uomini e donne assunti. 
+Bisogna tuttavvia tenere in considerazione il fatto che le aziende presenti nel dataset sono per la maggior parrte aziende informatiche e ciò potrebbe aver influito fortemente sui dati. 
+Nel caso in cui il dataset dovesse venir utilizzato per allenare un modello predittivo, tali valori rappresenterebbero un alto fattore di rischio. In uno scenario del genere, infatti, potrebbero essere favoriti individui di sesso maschile rispetto a quelli di sesso femminile.
+```{r}
+summary(df$gender)
+n_males <- nrow(df[df$gender=="Male",])
+n_females <- nrow(df[df$gender=="Female",])
+```
+##### **Nationality**
+Per quanto riguarda la nazionalità sono emersi alcuni gruppi di minoranze (ad esempio greci e africani), mentre la maggioranza è rappresentata dagli inglesi celtici. 
+Tali valori però rispecchiano la storia del Paese, che è stato colonizzato per oltre due secoli dall'impero brittannico. 
+_discorso su attributi sensibili rispetto alla legge_
+```{r}
+summary(df$nationality)
+```
+Di seguito vengono rappresentati i valori percentuali:
+```{r}
+round( summary(df$nationality) / nrow(df) * 100, 2)
+```
+
+### **CRITERIO DI SUFFICIENZA**
+Dopo un'approfondita analisi del dataset, si è supposto che una possibile variabile discriminatoria potesse essere la lunghezza dell'assunzione. In particolare, è stato ipotizzato che un incarico di breve durata (circa un anno) fosse correlato all'insorgenza di problemi sul posto di lavoro; mentre un'assunzione di lunga durata fosse indice di uno stato lavorativo soddisfacente. 
+Il criterio di sufficienza in questo dataset è stato verificato esaminando le distribuzioni delle lunghezze degli incarichi ottenuti tra categorie diverse identificate nel dataset. In particolare, le analisi sono state condotte su possibili discriminazioni di genere, di razza e di bellezza.
+
+Nei grafici sono stati utilizzati limiti sull'asse *y* proporzionali al numero totale di persone appartenenti a una certa categoria, con lo scopo finale di realizzare tracciati di facile lettura. 
+  
+#### **Gender**
+In primo luogo ci si è concentrati sul genere: ricordando la spropozione di partenza tra uomini e donne, non emerge alcuna discriminazione basata sul sesso.
+
+La durata dell'incarico viene considerata in termini di settimane di lavoro, considerando una media di 40 ore lavorative a settimana.
+```{r}
+h_male_total <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=2000/40),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini assunti", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_males))
+h_female_total <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=2000/40),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne assunte", x="Durata dell'incarico (settimane)", y="Numero assunte") +
+        ylim(c(0,n_females))
+title <- textGrob("Distribuzione totale di lavoratori e lavoratrici", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_total, h_female_total,  ncol = 2, top=title)
+
+df <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
+                   ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
+```
+
+Calcolare la media e la deviazione standard della durata degli incarichi per gli uomini e per le donne può permettere di analizzare possibili discriminazioni di genere anche prendendo un altro punto di vista. Difatti, mentre dagli istogrammi precedenti è chiaro che le due distribuzioni per le durate degli incarichi sono praticamente le stesse, dal calcolo della media è possibile notare che le donne sono assunte, in media, per circa 3 settimane in meno rispetto agli uomini.
+
+```{r}
+data_males_total <- dplyr::select(df, gender, tenure_len, m_urn) %>% filter (gender == "Male")
+mean_males_total <- round(mean(data_males_total[["tenure_len"]])/40, digits=2)
+st_dev_males_total <- round(sd(data_males_total[["tenure_len"]])/40, digits=2)
+data_females_total <- dplyr::select(df, gender, tenure_len, m_urn) %>% filter (gender == "Female")
+mean_females_total <- round(mean(data_females_total[["tenure_len"]])/40, digits=2)
+st_dev_females_total <- round(sd(data_females_total[["tenure_len"]])/40, digits=2)
+total <- matrix(c(mean_males_total,st_dev_males_total,mean_females_total,st_dev_females_total),ncol=2,byrow=TRUE)
+colnames(total) <- c("Mean", "St_dev")
+rownames(total) <- c("Males", "Females ")
+total <- as.table(total)
+total
+```
+Si è realizzata successivamente un'analisi più dettagliata, selezionando periodi temporali più specifici. In particolare è stato ritenuto opportuno considerare la soglia dell'anno come indice di competenza della persona sul posto di lavoro. 
+Anche in questo caso dai grafici non si evince alcuna netta disesguaglianza.
+
+```{r}
+h_male_low <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 3000/40, by=100/40),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini assunti", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_males/9))
+h_female_low <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 3000/40, by=100/40),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne assunte", x="Durata dell'incarico (settimane)", y="Numero assunte") +
+        ylim(c(0, n_females/9))
+title <- textGrob("Distribuzione di lavoratori e lavoratrici per breve periodo\n(fino a poco più di un anno)", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_low, h_female_low,  ncol = 2, top=title)
+```
+Anche in questo caso, sebbene non ci siano differenze nella distribuzione delle durate degli incarichi, analizzando la media risulta che le donne siano mediamente assunte per circa 2 settimane in meno rispetto agli uomini.
+```{r}
+data_males_low <- dplyr::select(df, gender, tenure_len, m_urn) %>% filter (gender == "Male") %>% filter (tenure_len<3000)
+mean_males_low <- round(mean(data_males_low[["tenure_len"]])/40, digits=2)
+st_dev_males_low <- round(sd(data_males_low[["tenure_len"]])/40, digits=2)
+data_females_low <- dplyr::select(df, gender, tenure_len, m_urn) %>% filter (gender == "Female") %>% filter (tenure_len<3000)
+mean_females_low <- round(mean(data_females_low[["tenure_len"]])/40, digits=2)
+st_dev_females_low <- round(sd(data_females_low[["tenure_len"]])/40, digits=2)
+low <- matrix(c(mean_males_low,st_dev_males_low,mean_females_low,st_dev_females_low),ncol=2,byrow=TRUE)
+colnames(low) <- c("Mean", "St_dev")
+rownames(low) <- c("Males", "Females ")
+low <- as.table(low)
+low
+```
+
+```{r}
+h_male_high <- ggplot(data=filter(df, gender =="Male"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(3000/40, 22000/40, by=500/40),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini assunti", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_males/50))
+h_female_high <- ggplot(data=filter(df, gender =="Female"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(3000/40, 22000/40, by=500/40),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne assunte", x="Durata dell'incarico (settimane)", y="Numero assunte") +
+        ylim(c(0, n_females/50))
+title <- textGrob("Distribuzione di lavoratori e lavoratrici per lungo periodo\n(più di un anno)", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_high, h_female_high,  ncol = 2, top=title)
+```
+La differenza di lunghezza dell'incarico per gli uomini e per le donne è ancora più evidente se si prendono in considerazione solo gli assunti per lungo periodo (ovvero più di un anno). In questo caso, infatti, la lunghezza media dell'incarico per le donne risulta inferiore rispetto a quella degli uomini di quasi 9 settimane, ovvero più di due mesi.
+
+```{r}
+data_males_high <- dplyr::select(df, gender, tenure_len, m_urn) %>% filter (gender == "Male") %>% filter (tenure_len>=3000)
+mean_males_high <- round(mean(data_males_high[["tenure_len"]])/40, digits=2)
+st_dev_males_high <- round(sd(data_males_high[["tenure_len"]])/40, digits=2)
+data_females_high <- dplyr::select(df, gender, tenure_len, m_urn) %>% filter (gender == "Female") %>% filter (tenure_len>=3000)
+mean_females_high <- round(mean(data_females_high[["tenure_len"]])/40, digits=2)
+st_dev_females_high <- round(sd(data_females_high[["tenure_len"]])/40, digits=2)
+high <- matrix(c(mean_males_high,st_dev_males_high,mean_females_high,st_dev_females_high),ncol=2,byrow=TRUE)
+colnames(high) <- c("Mean", "St_dev")
+rownames(high) <- c("Males", "Females ")
+high <- as.table(high)
+high
+```
+
+#### **Ethnicity**
+E' stato ripetuto lo studio condotto sui generi in modo analogo anche sulle etnie.
+Ancora una volta, i risultati non hanno mostrato alcuna problematicità.
+```{r}
+h_black_total <- ggplot(data=filter(df, ethnicity=="Black"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=2000/40),
+                 col="white",
+                 fill="yellow",
+                 alpha = .9) +
+        labs(title="Etnia nera", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_black))
+h_asian_total <- ggplot(data=filter(df, ethnicity=="Asian"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=2000/40),
+                 col="black",
+                 fill="white",
+                 alpha = .9) +
+        labs(title="Etnia asiatica", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_asian))
+h_white_total <- ggplot(data=filter(df, ethnicity =="White"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=2000/40),
+                 col="yellow",
+                 fill="black",
+                 alpha = .9) +
+        labs(title="Etnia bianca", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_white))
+title <- textGrob("Distribuzione totale di lavoratori divisi per etnia", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_black_total, h_asian_total, h_white_total,  ncol = 2, top=title)
+```
+Dalla seguente analisi è possibile tuttavia notare che, in media, le persone di etnia caucasica lavorano circa 2 settimane in più rispetto alle persone appartenenti alle altre etnie.
+
+```{r}
+data_white_total <- dplyr::select(df, ethnicity, tenure_len, m_urn, beauty) %>% filter (ethnicity == "White")
+mean_white_total <- round(mean(data_white_total[["tenure_len"]])/40, digits=2)
+st_dev_white_total <- round(sd(data_white_total[["tenure_len"]])/40, digits=2)
+data_black_total <- dplyr::select(df, ethnicity, tenure_len, m_urn, beauty) %>% filter (ethnicity == "Black")
+mean_black_total <- round(mean(data_black_total[["tenure_len"]])/40, digits=2)
+st_dev_black_total <- round(sd(data_black_total[["tenure_len"]])/40, digits=2)
+data_asian_total <- dplyr::select(df, ethnicity, tenure_len, m_urn, beauty) %>% filter (ethnicity == "Asian")
+mean_asian_total <- round(mean(data_asian_total[["tenure_len"]])/40, digits=2)
+st_dev_asian_total <- round(sd(data_asian_total[["tenure_len"]])/40, digits=2)
+total_ethnicity <- matrix(c(mean_white_total,st_dev_white_total,mean_black_total,st_dev_black_total, mean_asian_total, st_dev_asian_total),ncol=2,byrow=TRUE)
+colnames(total_ethnicity) <- c("Mean", "St_dev")
+rownames(total_ethnicity) <- c("White ", "Black ", "Asian ")
+total_ethnicity <- as.table(total_ethnicity)
+total_ethnicity
+```
+
+```{r}
+h_white_low <- ggplot(data=filter(df, ethnicity =="White"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 3000/40, by=100/40),
+                 col="yellow",
+                 fill="black",
+                 alpha = .9) +
+        labs(title="Etnia bianca", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_white/9))
+h_black_low <- ggplot(data=filter(df, ethnicity =="Black"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 3000/40, by=100/40),
+                 col="white",
+                 fill="yellow",
+                 alpha = .9) +
+        labs(title="Etnia nera", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0, n_black/9))
+h_asian_low <- ggplot(data=filter(df, ethnicity =="Asian"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 3000/40, by=100/40),
+                 col="black",
+                 fill="white",
+                 alpha = .9) +
+        labs(title="Etnia asiatica", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0, n_asian/9))
+title <- textGrob("Distribuzione dei lavoratori per breve periodo per etnia\n(fino a poco più di un anno)", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_black_low, h_asian_low, h_white_low, ncol = 2, top=title)
+```
+Lo squilibrio tra i periodi di assunzioni risulta essere molto meno evidente se presi in considerazione i lavoratori a breve termine. In questo caso infatti, le assunzioni differiscono di meno di una settimana. 
+```{r}
+data_white_low <- dplyr::select(df, ethnicity, tenure_len, m_urn) %>% filter (ethnicity == "White") %>% filter(tenure_len<3000)
+mean_white_low <- round(mean(data_white_low[["tenure_len"]])/40, digits=2)
+st_dev_white_low <- round(sd(data_white_low[["tenure_len"]])/40, digits=2)
+data_black_low <- dplyr::select(df, ethnicity, tenure_len, m_urn) %>% filter (ethnicity == "Black") %>% filter(tenure_len<3000)
+mean_black_low <- round(mean(data_black_low[["tenure_len"]])/40, digits=2)
+st_dev_black_low <- round(sd(data_black_low[["tenure_len"]])/40, digits=2)
+data_asian_low <- dplyr::select(df, ethnicity, tenure_len, m_urn) %>% filter (ethnicity == "Asian") %>% filter(tenure_len<3000)
+mean_asian_low <- round(mean(data_asian_low[["tenure_len"]])/40, digits=2)
+st_dev_asian_low <- round(sd(data_asian_low[["tenure_len"]])/40, digits=2)
+low_ethnicity <- matrix(c(mean_white_low,st_dev_white_low,mean_black_low,st_dev_black_low, mean_asian_low, st_dev_asian_low),ncol=2,byrow=TRUE)
+colnames(low_ethnicity) <- c("Mean", "St_dev")
+rownames(low_ethnicity) <- c("White ", "Black ", "Asian ")
+low_ethnicity <- as.table(low_ethnicity)
+low_ethnicity
+```
+
+
+```{r}
+h_white_high <- ggplot(data=filter(df, ethnicity =="White"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(3000/40, 22000/40, by=500/40),
+                 col="yellow",
+                 fill="black",
+                 alpha = .9) +
+        labs(title="Etnia bianca", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_white/50))
+h_black_high <- ggplot(data=filter(df, ethnicity =="Black"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(3000/40, 22000/40, by=500/40),
+                 col="white",
+                 fill="yellow",
+                 alpha = .9) +
+        labs(title="Etnia nera", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0, n_black/50))
+h_asian_high <- ggplot(data=filter(df, ethnicity =="Asian"), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(3000/40, 22000/40, by=500/40),
+                 col="black",
+                 fill="white",
+                 alpha = .9) +
+        labs(title="Etnia asiatica", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0, n_asian/50))
+title <- textGrob("Distribuzione dei lavoratori per lungo periodo divisi per etnia\n(fino a poco più di un anno)", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_black_high, h_asian_high, h_white_high, ncol = 2, top=title)
+```
+Al contrario, per le assunzioni a lungo termine questa discrepanza si accentua: in questo caso, la differenza tra la durata dell'incarico medio tra i lavoratori di etnia caucasica e quelli di etnia nera è di circa un mese e mezzo, mentre la differenza tra i lavoratori di etnia caucasica e quelli di etnia asiatica arriva addirittura a 9 settimane, ovvero più di 2 mesi.
+
+```{r}
+data_white_high <- dplyr::select(df, ethnicity, tenure_len, m_urn) %>% filter (ethnicity == "White") %>% filter(tenure_len>=3000)
+mean_white_high <- round(mean(data_white_high[["tenure_len"]])/40, digits=2)
+st_dev_white_high <- round(sd(data_white_high[["tenure_len"]])/40, digits=2)
+data_black_high <- dplyr::select(df, ethnicity, tenure_len, m_urn) %>% filter (ethnicity == "Black") %>% filter(tenure_len>=3000)
+mean_black_high <- round(mean(data_black_high[["tenure_len"]])/40, digits=2)
+st_dev_black_high <- round(sd(data_black_high[["tenure_len"]])/40, digits=2)
+data_asian_high <- dplyr::select(df, ethnicity, tenure_len, m_urn) %>% filter (ethnicity == "Asian") %>% filter(tenure_len>=3000)
+mean_asian_high <- round(mean(data_asian_high[["tenure_len"]])/40, digits=2)
+st_dev_asian_high <- round(sd(data_asian_high[["tenure_len"]])/40, digits=2)
+high_ethnicity <- matrix(c(mean_white_high,st_dev_white_high,mean_black_high,st_dev_black_high, mean_asian_high, st_dev_asian_high),ncol=2,byrow=TRUE)
+colnames(high_ethnicity) <- c("Mean", "St_dev")
+rownames(high_ethnicity) <- c("White ", "Black ", "Asian ")
+high_ethnicity <- as.table(high_ethnicity)
+high_ethnicity
+```
+
+#### **Not working**
+A questo punto è stato ritenuto opportuno considerare una parte di dati grezzi inizialmente scartati, ossia coloro che presentavano nel campo *tenure_len* valori nulli. 
+Purtroppo l'esito è marginale rispetto al resto del dataset e dunque non può essere considerato un valido termine di paragone. 
+```{r}
+not_working <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,
+                   ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len == 0) %>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
+nrow(not_working)
+```
+  
+Per completezza sono state effettuate analisi rispetto al genere e all'etnia sull'insieme dei non assunti. 
+_Le percentuali di asiatici, bianchi e neri non assunti è molto simile a quelle degli assunti._
+##### **gender**
+Per quanto riguarda il *gender* si possono rilevare delle discripenze rispetto al gruppo dei lavoratori, ma probabilmente vi sono troppi pochi campioni per trarre delle conclusioni significative.
+```{r}
+summary(not_working$gender)
+n_males_not_w <- nrow(not_working[not_working$gender=="Male",])
+n_females_not_w <- nrow(not_working[not_working$gender=="Female",])
+```
+
+##### **ethnicity**
+Per quanto riguarda l'*ethnicity*, invece, i risultati mostrano che le percentuali di non assunti sono proporzionali a quelle degli assunti.
+```{r}
+summary(not_working$ethnicity)
+n_white_not_w <- nrow(not_working[not_working$ethnicity=="White",])
+n_black_not_w <- nrow(not_working[not_working$ethnicity=="Black",])
+n_asian_not_w <- nrow(not_working[not_working$ethnicity=="Asian",])
+```
+Si presenta per quest'ultimo caso una tabella esplicativa.
+
+Mentre per le etnie le percentuali di assunti e non assunti è molto simile e non sembrano quindi esserci particolari discriminazioni, nel caso della divisione di genere è possibile notare una leggera differenza. Gli assunti uomini rappresentano, infatti, il 75,80% degli assunti totali, contro lo donne che rappresentano invece il 24,20% dei lavoratori totali. Per quanto riguarda i non assunti, invece, la percentuale delle donne sale al 34,35% e quella degli uomini, di conseguenza, scende al 65,65%. Questi dati sembrano confermare quindi l'esistenza di una discriminazione di genere. 
+```{r}
+perc_white_working = round(n_white/nrow(df)*100, digits=2)
+perc_white_not_working = round(n_white_not_w/nrow(not_working)*100, digits=2)
+
+perc_black_working = round(n_black/nrow(df)*100, digits=2)
+perc_black_not_working = round(n_black_not_w/nrow(not_working)*100, digits=2)
+
+perc_asian_working = round(n_asian/nrow(df)*100, digits=2)
+perc_asian_not_working = round(n_asian_not_w/nrow(not_working)*100, digits=2)
+
+perc_females_working = round(n_females/nrow(df)*100, digits=2)
+perc_females_not_working = round(n_females_not_w/nrow(not_working)*100, digits=2)
+
+perc_males_working = round(n_males/nrow(df)*100, digits=2)
+perc_males_not_working = round(n_males_not_w/nrow(not_working)*100, digits=2)
+
+perc_table <- matrix(c(perc_white_working, perc_black_working, perc_asian_working, perc_males_working, perc_females_working, perc_white_not_working, perc_black_not_working, perc_asian_not_working, perc_males_not_working, perc_females_not_working), ncol=5, byrow=TRUE)
+
+colnames (perc_table) <- c("White", "Black", "Asian", "Male", "Female")
+rownames (perc_table) <- c("Working", "Not working ")
+perc_table <- as.table(perc_table)
+perc_table
+```
+
+##### **beauty **
+Mantenendo la separazione tra assunti e non assunti, si è posta l'attenzione sulle caratteristiche fisiche della persona. 
+Gli istogrammi non solo non fanno emergere alcuna differenza tra i picchi di bellezza degli assunti e i non assunti, ma addirittura sono straordinariamente simili tra generi. 
+```{r}
+beauty_male <- ggplot(data=filter(df, gender =="Male"), aes(beauty_male)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini assunti", x="Valutazione della bellezza", y="Numero assunti") +
+        ylim(c(0,n_males/6))
+beauty_female <- ggplot(data=filter(df, gender =="Female"), aes(beauty_female)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne assunte", x="Valutazione della bellezza", y="Numero assunte") +
+        ylim(c(0, n_females/6))
+title <- textGrob("Distribuzione della bellezza per lavoratori, divisi per genere", gp=gpar(fontsize=15, font=1))
+grid.arrange(beauty_male, beauty_female, ncol = 2, top=title)
+```
+Anche in questo caso, tuttavia, può essere significativo considerare la media della bellezza degli uomini e delle donne assunte, insieme alla deviazione standard. 
+Anche dall'analisi della media bellezza degli assunti non si evidenziano particolari discriminazioni di genere tra i lavoratori.
+```{r}
+data_males_beauty <- dplyr::select(df, gender, beauty_male, m_urn) %>% filter (gender == "Male")
+mean_males_beauty <- round(mean(data_males_beauty[["beauty_male"]]), digits=2)
+st_dev_males_beauty <- round(sd(data_males_beauty[["beauty_male"]]), digits=2)
+data_females_beauty <- dplyr::select(df, gender, beauty_female, m_urn) %>% filter (gender == "Female")
+mean_females_beauty <- round(mean(data_females_beauty[["beauty_female"]]), digits=2)
+st_dev_females_beauty <- round(sd(data_females_beauty[["beauty_female"]]), digits=2)
+beauty <- matrix(c(mean_males_beauty,st_dev_males_beauty,mean_females_beauty,st_dev_females_beauty),ncol=2,byrow=TRUE)
+colnames(beauty) <- c("Mean", "St_dev")
+rownames(beauty) <- c("Males", "Females ")
+beauty <- as.table(beauty)
+beauty
+```
+
+```{r}
+beauty_male_not_w <- ggplot(data=filter(not_working, gender =="Male"), aes(beauty)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini non assunti", x="Valutazione della bellezza", y="Numero non assunti") +
+        ylim(c(0, n_males_not_w/4.5))
+beauty_female_not_w <- ggplot(data=filter(not_working, gender =="Female"), aes(beauty)) +
+        geom_histogram(breaks=seq(0, 100, by=5),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne non assunte", x="Valutazione della bellezza", y="Numero non assunte") +
+        ylim(c(0,n_females_not_w/4.5))
+title <- textGrob("Distribuzione della bellezza per i non assunti, divisi per genere", gp=gpar(fontsize=15, font=1))
+grid.arrange(beauty_male_not_w, beauty_female_not_w, ncol = 2, top=title)
+```
+Anche dall'analisi della bellezza media dei non lavoratori non si evidenziano particolari discriminazioni. Può essere tuttavia interessante notare che, mediamente, i non assunti sono leggermente più belli degli assunti.
+```{r}
+data_males_beauty_not_w <- dplyr::select(not_working, gender, beauty_male, m_urn) %>% filter (gender == "Male")
+mean_males_beauty_not_w <- round(mean(data_males_beauty_not_w[["beauty_male"]]), digits=2)
+st_dev_males_beauty_not_w <- round(sd(data_males_beauty_not_w[["beauty_male"]]), digits=2)
+data_females_beauty_not_w <- dplyr::select(not_working, gender, beauty_female, m_urn) %>% filter (gender == "Female")
+mean_females_beauty_not_w <- round(mean(data_females_beauty_not_w[["beauty_female"]]), digits=2)
+st_dev_females_beauty_not_w <- round(sd(data_females_beauty_not_w[["beauty_female"]]), digits=2)
+beauty_not_w <- matrix(c(mean_males_beauty_not_w,st_dev_males_beauty_not_w,mean_females_beauty_not_w,st_dev_females_beauty_not_w),ncol=2,byrow=TRUE)
+colnames(beauty_not_w) <- c("Mean", "St_dev")
+rownames(beauty_not_w) <- c("Males", "Females ")
+beauty_not_w <- as.table(beauty_not_w)
+beauty_not_w
+```
+
+E' stata imposta una soglia di bellezza e sono stati quindi generati due sottoinsiemi uno di uomini e l'altro di donne belli.
+```{r}
+beautiful_males <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        filter(gender=="Male") %>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len) %>%
+        filter (beauty>60)
+n_beautiful_males <- nrow(beautiful_males)
+
+beautiful_females <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        filter (gender=="Female")%>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len) %>%
+        filter (beauty>60)
+n_beautiful_females <- nrow(beautiful_females)
+
+ugly_males <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        filter(gender=="Male") %>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len) %>%
+        filter (beauty<=60)
+n_ugly_males <- nrow(ugly_males)
+
+ugly_females <- dplyr::select(raw_data, avg_pos_len, avg_prev_tenure_len, c_name, n_pos, n_prev_tenures, tenure_len, age, beauty, beauty_female, beauty_male,ethnicity, gender, nationality, n_followers, m_urn, smile) %>%
+        filter(tenure_len > 0) %>%
+        filter (gender=="Female")%>%
+        group_by(m_urn) %>%
+        arrange(desc(n_prev_tenures)) %>%
+        slice(1)%>%
+        filter(age>16) %>%
+        filter(age<65)%>%
+        filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len) %>%
+        filter (beauty<=60)
+n_ugly_females <- nrow(ugly_females)
+```
+```{r}
+h_male_beautiful <- ggplot(data=filter(beautiful_males), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=800/40),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini 'belli' assunti", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_beautiful_males/1.5))
+h_female_beautiful <- ggplot(data=filter(beautiful_females), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=800/40),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne 'belle' assunte", x="Durata dell'incarico (settimane)", y="Numero assunte") +
+        ylim(c(0,n_beautiful_females/1.5))
+title <- textGrob("Distribuzione totale di lavoratori e lavoratrici", gp=gpar(fontsize=15, font=1))
+
+
+h_male_ugly <- ggplot(data=filter(ugly_males), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=800/40),
+                 col="violet",
+                 fill="pink",
+                 alpha = .9) +
+        labs(title="Uomini 'brutti' assunti", x="Durata dell'incarico (settimane)", y="Numero assunti") +
+        ylim(c(0,n_ugly_males/1.5))
+h_female_ugly <- ggplot(data=filter(ugly_females), aes(tenure_len/40)) +
+        geom_histogram(breaks=seq(0, 22000/40, by=800/40),
+                 col="blue",
+                 fill="lightblue",
+                 alpha = .9) +
+        labs(title="Donne 'brutte' assunte", x="Durata dell'incarico (settimane)", y="Numero assunte") +
+        ylim(c(0,n_ugly_females/1.5))
+# title <- textGrob("Distribuzione totale di lavoratori e lavoratrici 'brutti'", gp=gpar(fontsize=15, font=1))
+grid.arrange(h_male_beautiful, h_female_beautiful, h_male_ugly, h_female_ugly,  ncol = 2, nrow=2, top=title)
+```
+
+Può essere interessante calcolare l'incarico medio per gli uomini belle, le donne belle, gli uomini brutti e le donne brutte. 
+
+```{r}
+data_males_beautiful <- dplyr::select(beautiful_males, gender, tenure_len, m_urn)
+mean_males_beautiful <- round(mean(data_males_beautiful[["tenure_len"]])/40, digits=2)
+st_dev_males_beautiful <- round(sd(data_males_beautiful[["tenure_len"]])/40, digits=2)
+data_males_ugly <- dplyr::select(ugly_males, gender, tenure_len, m_urn)
+mean_males_ugly <- round(mean(data_males_ugly[["tenure_len"]])/40, digits=2)
+st_dev_males_ugly <- round(sd(data_males_ugly[["tenure_len"]])/40, digits=2)
+
+data_females_beautiful <- dplyr::select(beautiful_females, gender, tenure_len, m_urn)
+mean_females_beautiful <- round(mean(data_females_beautiful[["tenure_len"]])/40, digits=2)
+st_dev_females_beautiful <- round(sd(data_females_beautiful[["tenure_len"]])/40, digits=2)
+data_females_ugly <- dplyr::select(ugly_females, gender, tenure_len, m_urn)
+mean_females_ugly <- round(mean(data_females_ugly[["tenure_len"]])/40, digits=2)
+st_dev_females_ugly <- round(sd(data_females_ugly[["tenure_len"]])/40, digits=2)
+
+beautiful_ugly <- matrix(c(mean_males_beautiful,st_dev_males_beautiful,mean_males_ugly,st_dev_males_ugly, mean_females_beautiful, st_dev_females_beautiful, mean_females_ugly, st_dev_females_ugly),ncol=2,byrow=TRUE)
+colnames(beautiful_ugly) <- c("Mean", "St_dev")
+rownames(beautiful_ugly) <- c("Beautiful males", "Ugly males", "Beautiful females ", "Ugly females")
+beautiful_ugly <- as.table(beautiful_ugly)
+beautiful_ugly
+```
+
+Da queste medie è interessante notare che, sia per quanto riguarda gli uomini, sia per quanto riguarda le donne, le persone considerate non di bellissimo aspetto tendono ad essere assunte mediamente più a lungo. In entrambe le categorie, infatti, la differenza è di circa un mese. 
+
+Un altro aspetto da esplorare è la possibile correlazione tra l'etnia dei lavoratori e il punteggio di bellezza a loro assegnato. Per fare ciò, calcoliamo innanzi tutto le percentuali per ogni etnia sia nel sottogruppo di lavoratori "belli" sia nel sottogruppo di lavoratori "belli". Calcoliamo, inoltre, la media e la deviazione standard della bellezza per ogni etnia.
+
+```{r}
+perc_beautiful_males_white <- round((nrow(beautiful_males %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Male"))*100, digits =2)
+perc_ugly_males_white <- round((nrow(ugly_males %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Male"))*100, digits=2)
+
+perc_beautiful_females_white <- round((nrow(beautiful_females %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Female"))*100, digits=2)
+perc_ugly_females_white <- round((nrow(ugly_females %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Female"))*100, digits=2)
+
+perc_beautiful_males_black <- round((nrow(beautiful_males %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Male"))*100, digits=2)
+perc_ugly_males_black <- round((nrow(ugly_males %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Male"))*100, digits=2)
+
+perc_beautiful_females_black <- round((nrow(beautiful_females %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Female"))*100, digits=2)
+perc_ugly_females_black <- round((nrow(ugly_females %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Female"))*100, digits=2)
+
+perc_beautiful_males_asian <- round((nrow(beautiful_males %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Male"))*100, digits=2)
+perc_ugly_males_asian <- round((nrow(ugly_males %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Male"))*100, digits=2)
+
+perc_beautiful_females_asian <- round((nrow(beautiful_females %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Female"))*100, digits=2)
+perc_ugly_females_asian <- round((nrow(ugly_females %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Female"))*100, digits=2)
+
+perc_beauty_ethnicity <- matrix(c(perc_beautiful_males_white,perc_ugly_males_white,perc_beautiful_females_white,perc_ugly_females_white, perc_beautiful_males_black, perc_ugly_males_black, perc_beautiful_females_black, perc_ugly_females_black, perc_beautiful_males_asian, perc_ugly_males_asian, perc_beautiful_females_asian, perc_ugly_females_asian),ncol=2,byrow=TRUE)
+colnames(perc_beauty_ethnicity) <- c("Percentage of beautiful   ", "Percentage of ugly   ")
+rownames(perc_beauty_ethnicity) <- c("White men", "White women ", "Black men", "Black women ", "Asian men", "Asian women ")
+perc_beauty_ethnicity <- as.table(perc_beauty_ethnicity)
+perc_beauty_ethnicity
+```
+
+```{r}
+mean_beauty_white <- round(mean(data_white_total[["beauty"]]), digits=2)
+st_dev_beauty_white <- round(sd(data_white_total[["beauty"]]), digits=2)
+mean_beauty_black <- round(mean(data_black_total[["beauty"]]), digits=2)
+st_dev_beauty_black <- round(sd(data_white_total[["beauty"]]), digits=2)
+mean_beauty_asian <- round(mean(data_asian_total[["beauty"]]), digits=2)
+st_dev_beauty_asian <- round(sd(data_asian_total[["beauty"]]), digits=2)
+
+beauty_ethnicity <- matrix(c(mean_beauty_white,st_dev_beauty_white,mean_beauty_black,st_dev_beauty_black, mean_beauty_asian, st_dev_beauty_asian),ncol=2,byrow=TRUE)
+colnames(beauty_ethnicity) <- c("Mean", "St_dev")
+rownames(beauty_ethnicity) <- c("White ", "Black ", "Asian ")
+beauty_ethnicity <- as.table(beauty_ethnicity)
+beauty_ethnicity
+```
+Dalle analisi effettuate, è possibile notare che la bellezza media è circa uguale per i gruppi di persone appartenenti a diverse etnie. Tuttavia, è interessante notare che, mentre per le persone di etnia caucasica e per quelle di etnia asiatica non sembra esserci un grosso squilibrio tra le percentuali di persone classificate come "belle" e come "brutte", lo stesso non vale per le persone di etnia nera. Per questo gruppo, infatti, la percentuale di persone "brutte" è nettamente maggiore rispetto a quelle "belle", sia per quanto riguarda gli uomini, sia per quanto riguarda le donne. Per quanto questo sia un bias interessante da notare, è comunque importante sottolineare che le analisi effettuate finora non portano a credere che questo squilibrio possa svantaggiare i lavoratori neri rispetto a quelli appartenenti ad altre etnie. 
+
+
+#**PRINCIPAL COMPONENT ANALYSIS**
+```{r}
+
+data.matrix <- dplyr::filter(raw_data, tenure_len > 0) %>% group_by(m_urn) %>% arrange(desc(n_prev_tenures)) %>% slice(1)%>% filter(age>16) %>% filter(age<65) %>% filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
+
+head(data.matrix)
+dim(data.matrix)
+
+must_convert<-sapply(data.matrix,is.factor)                # logical vector telling if a variable needs to be displayed as numeric
+data.matrix2<-sapply(data.matrix[,must_convert],unclass)    # data.frame of all categorical variables now displayed as numeric
+out<-cbind(data.matrix[,!must_convert],data.matrix2)        # complete data.frame with all variables put together
+
+pca <- prcomp(data.matrix2, scale=TRUE) 
+ 
+## plot pc1 and pc2
+plot(pca$x[,1], pca$x[,2])
+ 
+## make a scree plot
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
+
+barplot(pca.var.per, main="Scree Plot", xlab="Principal Component", ylab="Percent Variation")
+
+## now make a fancy looking plot that shows the PCs and the variation:
+library(ggplot2)
+
+# I should give the names of all the users... their IDs
+pca.data <- data.frame(Sample=rownames(pca$x),
+  X=pca$x[,1],
+  Y=pca$x[,2])
+pca.data
+ 
+ggplot(data=pca.data, aes(x=X, y=Y, label=Sample)) +
+  geom_text() +
+  xlab(paste("PC1 - ", pca.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", pca.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("My PCA Graph")
+```
+
+ 
+
+ 
+## get the name of the top 10 measurements (genes) that contribute
+## most to pc1.
+loading_scores <- pca$rotation[,1]
+gene_scores <- abs(loading_scores) ## get the magnitudes
+gene_score_ranked <- sort(gene_scores, decreasing=TRUE)
+top_10_genes <- names(gene_score_ranked[1:10])
+ 
+top_10_genes ## show the names of the top 10 genes
+ 
+pca$rotation[top_10_genes,1] ## show the scores (and +/- sign)
+ 
+#######
+##
+## NOTE: Everything that follow is just bonus stuff.
+## It simply demonstrates how to get the same
+## results using "svd()" (Singular Value Decomposition) or using "eigen()"
+## (Eigen Decomposition).
+##
+##
+#######
+ 
+############################################
+##
+## Now let's do the same thing with svd()
+##
+## svd() returns three things
+## v = the "rotation" that prcomp() returns, this is a matrix of eigenvectors
+##     in other words, a matrix of loading scores
+## u = this is similar to the "x" that prcomp() returns. In other words,
+##     sum(the rotation * the original data), but compressed to the unit vector
+##     You can spread it out by multiplying by "d"
+## d = this is similar to the "sdev" value that prcomp() returns (and thus
+##     related to the eigen values), but not
+##     scaled by sample size in an unbiased way (ie. 1/(n-1)).
+##     For prcomp(), sdev = sqrt(var) = sqrt(ss(fit)/(n-1))
+##     For svd(), d = sqrt(ss(fit))
+############################################
+ 
+svd.stuff <- svd(scale(t(data.matrix), center=TRUE))
+ 
+## calculate the PCs
+svd.data <- data.frame(Sample=colnames(data.matrix),
+  X=(svd.stuff$u[,1] * svd.stuff$d[1]),
+  Y=(svd.stuff$u[,2] * svd.stuff$d[2]))
+svd.data
+ 
+## alternatively, we could compute the PCs with the eigen vectors and the
+## original data
+svd.pcs <- t(t(svd.stuff$v) %*% t(scale(t(data.matrix), center=TRUE)))
+svd.pcs[,1:2] ## the first to principal components
+ 
+svd.df <- ncol(data.matrix) - 1
+svd.var <- svd.stuff$d^2 / svd.df
+svd.var.per <- round(svd.var/sum(svd.var)*100, 1)
+ 
+ggplot(data=svd.data, aes(x=X, y=Y, label=Sample)) +
+  geom_text() +
+  xlab(paste("PC1 - ", svd.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", svd.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("svd(scale(t(data.matrix), center=TRUE)")
+ 
+############################################
+##
+## Now let's do the same thing with eigen()
+##
+## eigen() returns two things...
+## vectors = eigen vectors (vectors of loading scores)
+##           NOTE: pcs = sum(loading scores * values for sample)
+## values = eigen values
+############################################
+cov.mat <- cov(scale(t(data.matrix), center=TRUE))
+dim(cov.mat)
+ 
+## since the covariance matrix is symmetric, we can tell eigen() to just
+## work on the lower triangle with "symmetric=TRUE"
+eigen.stuff <- eigen(cov.mat, symmetric=TRUE)
+dim(eigen.stuff$vectors)
+head(eigen.stuff$vectors[,1:2])
+ 
+eigen.pcs <- t(t(eigen.stuff$vectors) %*% t(scale(t(data.matrix), center=TRUE)))
+eigen.pcs[,1:2]
+ 
+eigen.data <- data.frame(Sample=rownames(eigen.pcs),
+  X=(-1 * eigen.pcs[,1]), ## eigen() flips the X-axis in this case, so we flip it back
+  Y=eigen.pcs[,2]) ## X axis will be PC1, Y axis will be PC2
+eigen.data
+ 
+eigen.var.per <- round(eigen.stuff$values/sum(eigen.stuff$values)*100, 1)
+ 
+ggplot(data=eigen.data, aes(x=X, y=Y, label=Sample)) +
+  geom_text() +
+  xlab(paste("PC1 - ", eigen.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", eigen.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("eigen on cov(t(data.matrix))")
+```
