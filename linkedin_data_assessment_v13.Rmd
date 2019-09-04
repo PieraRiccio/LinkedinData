@@ -701,37 +701,31 @@ Da queste medie è interessante notare che, sia per quanto riguarda gli uomini, 
 Un altro aspetto da esplorare è la possibile correlazione tra l'etnia dei lavoratori e il punteggio di bellezza a loro assegnato. Per fare ciò, calcoliamo innanzi tutto le percentuali per ogni etnia sia nel sottogruppo di lavoratori "belli" sia nel sottogruppo di lavoratori "belli". Calcoliamo, inoltre, la media e la deviazione standard della bellezza per ogni etnia.
 
 ```{r}
-round(summary(beautiful_males$ethnicity) / nrow(beautiful_males) * 100, 2)
+perc_beautiful_males_white <- round((nrow(beautiful_males %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Male"))*100, digits =2)
+perc_ugly_males_white <- round((nrow(ugly_males %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Male"))*100, digits=2)
 
-perc_beautiful_males_white <- (nrow(beautiful_males %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Male"))*100
-perc_ugly_males_white <- (nrow(ugly_males %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Male"))*100
+perc_beautiful_females_white <- round((nrow(beautiful_females %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Female"))*100, digits=2)
+perc_ugly_females_white <- round((nrow(ugly_females %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Female"))*100, digits=2)
 
-perc_beautiful_females_white <- (nrow(beautiful_females %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Female"))*100
-perc_ugly_females_white <- (nrow(ugly_females %>% filter (ethnicity == "White"))) / nrow (df %>% filter(ethnicity=="White") %>% filter (gender == "Female"))*100
+perc_beautiful_males_black <- round((nrow(beautiful_males %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Male"))*100, digits=2)
+perc_ugly_males_black <- round((nrow(ugly_males %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Male"))*100, digits=2)
 
-perc_beautiful_males_black <- (nrow(beautiful_males %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Male"))*100
-perc_ugly_males_black <- (nrow(ugly_males %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Male"))*100
+perc_beautiful_females_black <- round((nrow(beautiful_females %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Female"))*100, digits=2)
+perc_ugly_females_black <- round((nrow(ugly_females %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Female"))*100, digits=2)
 
-perc_beautiful_females_black <- (nrow(beautiful_females %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Female"))*100
-perc_ugly_females_black <- (nrow(ugly_females %>% filter (ethnicity == "Black"))) / nrow (df %>% filter(ethnicity=="Black") %>% filter (gender == "Female"))*100
+perc_beautiful_males_asian <- round((nrow(beautiful_males %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Male"))*100, digits=2)
+perc_ugly_males_asian <- round((nrow(ugly_males %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Male"))*100, digits=2)
 
-perc_beautiful_males_asian <- (nrow(beautiful_males %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Male"))*100
-perc_ugly_males_asian <- (nrow(ugly_males %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Male"))*100
+perc_beautiful_females_asian <- round((nrow(beautiful_females %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Female"))*100, digits=2)
+perc_ugly_females_asian <- round((nrow(ugly_females %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Female"))*100, digits=2)
 
-perc_beautiful_females_asian <- (nrow(beautiful_females %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Female"))*100
-perc_ugly_females_asian <- (nrow(ugly_females %>% filter (ethnicity == "Asian"))) / nrow (df %>% filter(ethnicity=="Asian") %>% filter (gender == "Female"))*100
-
-perc_beauty_ethnicity <- 
+perc_beauty_ethnicity <- matrix(c(perc_beautiful_males_white,perc_ugly_males_white,perc_beautiful_females_white,perc_ugly_females_white, perc_beautiful_males_black, perc_ugly_males_black, perc_beautiful_females_black, perc_ugly_females_black, perc_beautiful_males_asian, perc_ugly_males_asian, perc_beautiful_females_asian, perc_ugly_females_asian),ncol=2,byrow=TRUE)
+colnames(perc_beauty_ethnicity) <- c("Percentage of beautiful   ", "Percentage of ugly   ")
+rownames(perc_beauty_ethnicity) <- c("White men", "White women ", "Black men", "Black women ", "Asian men", "Asian women ")
+perc_beauty_ethnicity <- as.table(perc_beauty_ethnicity)
+perc_beauty_ethnicity
 ```
-```{r}
-round(summary(ugly_males$ethnicity) / nrow(ugly_males) * 100, 2)
-```
-```{r}
-round(summary(beautiful_females$ethnicity) / nrow(beautiful_females) * 100, 2)
-```
-```{r}
-round(summary(ugly_females$ethnicity) / nrow(ugly_females) * 100, 2)
-```
+
 ```{r}
 mean_beauty_white <- round(mean(data_white_total[["beauty"]]), digits=2)
 st_dev_beauty_white <- round(sd(data_white_total[["beauty"]]), digits=2)
@@ -746,4 +740,167 @@ rownames(beauty_ethnicity) <- c("White ", "Black ", "Asian ")
 beauty_ethnicity <- as.table(beauty_ethnicity)
 beauty_ethnicity
 ```
-Dalle analisi effettuate, non sembra esserci alcuna correlazione rilevante tra l'etnia e la bellezza assegnata a un determinato individuo. In 
+Dalle analisi effettuate, è possibile notare che la bellezza media è circa uguale per i gruppi di persone appartenenti a diverse etnie. Tuttavia, è interessante notare che, mentre per le persone di etnia caucasica e per quelle di etnia asiatica non sembra esserci un grosso squilibrio tra le percentuali di persone classificate come "belle" e come "brutte", lo stesso non vale per le persone di etnia nera. Per questo gruppo, infatti, la percentuale di persone "brutte" è nettamente maggiore rispetto a quelle "belle", sia per quanto riguarda gli uomini, sia per quanto riguarda le donne. Per quanto questo sia un bias interessante da notare, è comunque importante sottolineare che le analisi effettuate finora non portano a credere che questo squilibrio possa svantaggiare i lavoratori neri rispetto a quelli appartenenti ad altre etnie. 
+
+
+#**PRINCIPAL COMPONENT ANALYSIS**
+```{r}
+
+data.matrix <- dplyr::filter(raw_data, tenure_len > 0) %>% group_by(m_urn) %>% arrange(desc(n_prev_tenures)) %>% slice(1)%>% filter(age>16) %>% filter(age<65) %>% filter (((age-16)*h_working_per_year)>n_prev_tenures*avg_prev_tenure_len+ tenure_len)
+
+head(data.matrix)
+dim(data.matrix)
+
+must_convert<-sapply(data.matrix,is.factor)                # logical vector telling if a variable needs to be displayed as numeric
+data.matrix2<-sapply(data.matrix[,must_convert],unclass)    # data.frame of all categorical variables now displayed as numeric
+out<-cbind(data.matrix[,!must_convert],data.matrix2)        # complete data.frame with all variables put together
+
+pca <- prcomp(data.matrix2, scale=TRUE) 
+ 
+## plot pc1 and pc2
+plot(pca$x[,1], pca$x[,2])
+merge (data.matrix, data.matrix2, by="m_urn", sort=TRUE)
+```
+
+
+```{r}
+## make a scree plot
+pca.var <- pca$sdev^2
+pca.var.per <- round(pca.var/sum(pca.var)*100, 1)
+
+barplot(pca.var.per, main="Scree Plot", xlab="Principal Component", ylab="Percent Variation")
+
+```
+
+
+```{r}
+
+## now make a fancy looking plot that shows the PCs and the variation:
+library(ggplot2)
+
+names <- as.vector(dplyr::select(data.matrix, m_urn))
+
+pca.data <- data.frame(names,
+  X=pca$x[,1],
+  Y=pca$x[,2])
+pca.data
+
+X <- dplyr::select(pca.data, X)
+Y <- dplyr::select(pca.data, Y)
+label <- dplyr::select(pca.data, m_urn)
+head((names))
+dim((names))
+
+ggplot(data=pca.data, aes(x=X, y=Y, label=names)) +
+  geom_text() +
+  xlab(paste("PC1 - ", pca.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", pca.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("My PCA Graph")
+
+```
+ 
+
+```{r}
+## get the name of the top 10 measurements (genes) that contribute
+## most to pc1.
+loading_scores <- pca$rotation[,1]
+gene_scores <- abs(loading_scores) ## get the magnitudes
+gene_score_ranked <- sort(gene_scores, decreasing=TRUE)
+top_10_genes <- names(gene_score_ranked[1:7])
+ 
+top_10_genes ## show the names of the top 10 genes
+ 
+pca$rotation[top_10_genes,1] ## show the scores (and +/- sign)
+ 
+
+```
+
+```{r}
+
+############################################
+##
+## Now let's do the same thing with svd()
+##
+## svd() returns three things
+## v = the "rotation" that prcomp() returns, this is a matrix of eigenvectors
+##     in other words, a matrix of loading scores
+## u = this is similar to the "x" that prcomp() returns. In other words,
+##     sum(the rotation * the original data), but compressed to the unit vector
+##     You can spread it out by multiplying by "d"
+## d = this is similar to the "sdev" value that prcomp() returns (and thus
+##     related to the eigen values), but not
+##     scaled by sample size in an unbiased way (ie. 1/(n-1)).
+##     For prcomp(), sdev = sqrt(var) = sqrt(ss(fit)/(n-1))
+##     For svd(), d = sqrt(ss(fit))
+############################################
+ 
+svd.stuff <- svd(scale(data.matrix2, center=TRUE))
+ 
+## calculate the PCs
+svd.data <- data.frame(Sample=colnames(data.matrix2),
+  X=(svd.stuff$u[,1] * svd.stuff$d[1]),
+  Y=(svd.stuff$u[,2] * svd.stuff$d[2]))
+svd.data
+
+```
+
+ 
+## alternatively, we could compute the PCs with the eigen vectors and the
+## original data
+svd.pcs <- t(t(svd.stuff$v) %*% t(scale(t(data.matrix), center=TRUE)))
+svd.pcs[,1:2] ## the first to principal components
+ 
+svd.df <- ncol(data.matrix) - 1
+svd.var <- svd.stuff$d^2 / svd.df
+svd.var.per <- round(svd.var/sum(svd.var)*100, 1)
+ 
+ggplot(data=svd.data, aes(x=X, y=Y, label=Sample)) +
+  geom_text() +
+  xlab(paste("PC1 - ", svd.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", svd.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("svd(scale(t(data.matrix), center=TRUE)")
+ 
+############################################
+##
+## Now let's do the same thing with eigen()
+##
+## eigen() returns two things...
+## vectors = eigen vectors (vectors of loading scores)
+##           NOTE: pcs = sum(loading scores * values for sample)
+## values = eigen values
+############################################
+cov.mat <- cov(scale(t(data.matrix), center=TRUE))
+dim(cov.mat)
+ 
+## since the covariance matrix is symmetric, we can tell eigen() to just
+## work on the lower triangle with "symmetric=TRUE"
+eigen.stuff <- eigen(cov.mat, symmetric=TRUE)
+dim(eigen.stuff$vectors)
+head(eigen.stuff$vectors[,1:2])
+ 
+eigen.pcs <- t(t(eigen.stuff$vectors) %*% t(scale(t(data.matrix), center=TRUE)))
+eigen.pcs[,1:2]
+ 
+eigen.data <- data.frame(Sample=rownames(eigen.pcs),
+  X=(-1 * eigen.pcs[,1]), ## eigen() flips the X-axis in this case, so we flip it back
+  Y=eigen.pcs[,2]) ## X axis will be PC1, Y axis will be PC2
+eigen.data
+ 
+eigen.var.per <- round(eigen.stuff$values/sum(eigen.stuff$values)*100, 1)
+ 
+ggplot(data=eigen.data, aes(x=X, y=Y, label=Sample)) +
+  geom_text() +
+  xlab(paste("PC1 - ", eigen.var.per[1], "%", sep="")) +
+  ylab(paste("PC2 - ", eigen.var.per[2], "%", sep="")) +
+  theme_bw() +
+  ggtitle("eigen on cov(t(data.matrix))")
+```
+
+ 
+
+ 
+
+
+```
