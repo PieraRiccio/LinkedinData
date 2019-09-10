@@ -794,9 +794,18 @@ Potrebbe essere interessante, a semplici fini tecnici, inserire volutamente un l
 Nella realizzazione di questo esperimento, si preferisce tuttavia non implementare un "falso classificatore", ma di proseguire l'analisi attraverso la Principal Component Analysis.
 
 
-## **PRINCIPAL COMPONENT ANALYSIS**
+## **ANALISI DELLE COMPONENTI PRINCIPALI**
 
-La principal component analysis (PCA) è ********************************
+L’analisi delle componenti principali (principal component analysis – PCA) è una procedura statistica che utilizza trasformazioni ortogonali per convertire un insieme di osservazioni di variabili possibilmente correlate in un insieme di valori di variabili linearmente scorrelate, chiamate componenti principali. Questa trasformazione viene applicata in maniera tale che la prima componente principale risulti essere quella con la più alta varianza possibile e che tenga quindi conto della variabilità del dataset stesso. Tutte le componenti successive hanno ognuna la varianza più alta possibile rispettando il limite che siano tutte ortogonali rispetto alle componenti precedenti.
+
+Questa tecnica è particolarmente utile nella semplificazione dell’analisi di dataset estremamente ampi ed eterogenei, dove gli attributi presi in esame per determinare ciascun campione sono numerosi e diversi tra loro. Difatti, immaginando di visualizzare un dataset come un insieme di coordinate in un sistema a più dimensioni, utilizzando solo alcune delle componenti principali ottenute mediante la PCA è possibile ridurre la dimensionalità del dataset, conservando tuttavia quante più informazioni possibili sulle osservazioni stesse. 
+
+È possibile immaginare il processo della PCA come l’adattamento un ellissoide ai dati presi in considerazione; ciascun asse di quest’ellissoide rappresenta una componente principale. Se un asse risulta essere piccolo, allora la varianza lungo quell’asse è piccola e, per questo motivo, omettendo quell’asse dell’ellissoide e la corrispondente componente principale, solo un proporzionalmente piccolo quantitativo di informazioni verrà perso.
+
+Molto spesso, i risultati della PCA possono rilevare la struttura interna dei dati, in una maniera che spiega meglio la varianza delle osservazioni. Poiché nel dataset preso in analisi sui dati di assunzioni di LinkedIn ciascun lavoratore risulta caratterizzato da decine di attributi differenti, può risultare difficile identificare quali tra questi influenzi concretamente l’andamento del dataset. Si adopera dunque la tecnica di PCA, analizzando attributi più pertinenti e determinando quali lavoratori risultano simili tra loro per caratteristiche e quali, invece, risultano totalmente differenti. 
+
+L’obiettivo finale dell’applicazione di questa tecnica è quello di avere un ulteriore punto di vista sulla possibilità di discriminazioni basate su variabili non prese in considerazioni dall’analisi svolta precedentemente a livello manuale. 
+
 
 ```{r}
 
@@ -807,7 +816,7 @@ data.matrix <- dplyr::filter(raw_data, tenure_len > 0) %>% filter(age>16) %>% fi
 head(data.matrix)
 dim(data.matrix)
 ```
-Prima di procedere con la Principal Component Analysis, è necessario fare pulizia del dataset, eliminando alcune colonne (quella relativa all'immagine e all'azienda di assunzione) e convertendo le variabili nominali (il genere, l'etnia, la nazionalità e la presenza di occhiali) in variabili numeriche.
+Prima di procedere con la PCA, è necessario fare pulizia del dataset, eliminando alcune colonne (quella relativa all'immagine e all'azienda di assunzione) e convertendo le variabili nominali (il genere, l'etnia, la nazionalità e la presenza di occhiali) in variabili numeriche.
 
 ```{r}
 data.matrix$gender.n <- as.numeric( 
@@ -858,7 +867,7 @@ plot(dm2.pca, type = "l")
 summary(dm2.pca)
 ```
 
-Il grafico sovrastante mostra l'andamento delle varianze (asse y) associate alle Principal Components (asse x) ottenute, ed è utile per decidere quante PCs utilizzare per un'analisi adeguata del dataset. Per ulteriore conferma, osservando il parametro "Proportion of Variance", si evince come le prime due componenti (PC1 e PC2) influenzino circa il 17% della variabilità nei dati e pertanto possano essere utilizzate ai fini dell'analisi. 
+Il grafico sovrastante mostra l'andamento delle varianze (asse y) associate alle Principal Components (asse x) ottenute, ed è utile per decidere quante PCs utilizzare per un'analisi adeguata del dataset. Osservando il parametro "Proportion of Variance", si evince come le prime due componenti (PC1 e PC2) influenzino circa il 17% della variabilità nei dati e possono essere quindi particolarmente utili per svolgere un'analisi semplificata del dataset. 
 
 ```{r}
 ggbiplot(dm2.pca)
@@ -877,8 +886,7 @@ g <- g + theme(legend.direction = 'vertical',
 print(g)
 ```
 
-Per un'indagine più informativa, i dati sono stati suddivisi in sottogruppi, scegliendo come criterio l'etnia relativa a ciascuna persona. Sebbene si possa notare una netta maggioranza dei dati di etnia bianca rispetto ai dati delle restanti due, le tre macro-categorie (Asian, Black, White) risultano distribuite in maniera simile nel grafico, poiché le loro ellissi sono incentrante nella medesima zona. Anche gli outliers relativi a ciascuna etnia sono ripartiti in maniera pressoché identica. 
-Dunque non si riscontra alcun attributo preponderante per un'etnia in particolare, poiché le tre macro categorie risultano influenzate equamente dalle variabili contibuenti ai valori delle PCs.
+Per un'indagine più informativa, i dati sono stati suddivisi in sottogruppi, scegliendo come criterio l'etnia relativa a ciascuna persona. Sebbene si possa notare una netta maggioranza dei dati di etnia bianca rispetto ai dati delle restanti due, le tre macro-categorie (Asian, Black, White) risultano distribuite in maniera simile nel grafico, poiché le loro ellissi sono incentrante nella medesima zona. Anche gli outliers relativi a ciascuna etnia sono ripartiti in maniera pressoché simile. Le tre macrocategorie risultano quindi essere influenzate equamente dalle variabili contribuenti ai valori della PCs e questo suggerisce che non ci siano correlazioni particolari tra i valori ottenuti per ciascun attributo (sensibili e non) e l'etnia. 
 
 ```{r}
 
@@ -892,6 +900,6 @@ print(g)
 
 ```
 
-Considerando nuovamente come componenti principali PC1 e PC2, si è posta stavolta l'attenzione sul sesso della persona. 
-Può risultare interessante notare come, nel caso dell'ellisse relativa al genere femminile, essa sia più orientata verso attributi quali "smile", "happiness", "face_quality". Tuttavia, non si emerge alcuna differenza sostanziale tra le variabili da cui ciascun genere dipende, poiché le due ellissi e gli outliers tendono a sovrapporsi anche in questo caso. 
-Dalle analisi effettuate, si evince che la dipendenza dei dati rispetto agli attributi scelti per le componenti principali sia sostanzialmente uguale a prescindere dall'attributo scelto per la suddivisione dei gruppi di persone e pertanto non si riscontrano sostanziali discriminazioni o differenze. 
+Considerando nuovamente come componenti principali PC1 e PC2, si è posta stavolta l'attenzione sul sesso dei lavoratori e delle lavoratrici. Sebbene anche in questo caso le due ellissi e gli outliers tendono a sovrapporsi, è comunque interessante notare che l'ellissi relativa alle lavoratrici donne risulta effettivamente più orientata verso attributi quali "smile", "happiness" e "face_quality". 
+
+Così come nell'analisi manuale, quindi, è possibile concludere che esiste nel dataset un leggera discriminazione di genere, che tuttavia, almeno attenendosi alle analisi qui svolte, non sembra essere estremamente significativa per quanto riguarda l'effettiva assunzione di personale da parte delle aziende considerate. 
